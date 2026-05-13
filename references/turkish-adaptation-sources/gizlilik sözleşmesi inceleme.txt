@@ -1,0 +1,172 @@
+YAML
+name: gizlilik-sozlesmesi-inceleme
+description: >
+  Referans: Gelen Gizlilik Sözleşmelerinin (NDA) hızlı bir şekilde YEŞİL / SARI / KIRMIZI olarak 
+  sınıflandırılması. Satış ve İş Geliştirme ekiplerinin hukuk birimine danışmadan önce 
+  kendi başlarına değerlendirme yapabilmesi için tasarlanmıştır. Bir NDA tespit edildiğinde 
+  /ticari-hukuk:incele komutuyla yüklenir.
+user-invocable: false
+---
+
+# Gizlilik Sözleşmesi (NDA) İncelemesi
+
+## Dosya Bağlamı
+
+**Dosya Bağlamı.** Büro/Kurum düzeyindeki CLAUDE.md dosyasında `## Matter workspaces` bölümünü kontrol et. Eğer `Enabled` durumu `✗` ise (kurum içi hukukçular için varsayılan), bu paragrafı atla. Eğer aktifse ve açık bir dosya/iş (matter) yoksa şunu sor: "Bu inceleme hangi dosya için? `/ticari-hukuk:dosya-alani switch <slug>` komutunu çalıştır veya `buro-geneli` de." Aktif dosyanın `dosya.md` içeriğini bağlam ve özel talimatlar için yükle. çıktıları `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/<dosya-slug>/` klasörüne yaz. `Cross-matter context` açık değilse asla başka bir dosyanın verisini okuma.
+
+---
+
+## Hedef Kontrolü (Mesleki Sır)
+
+Çıktı üretmeden önce, bu çıktının nereye gönderileceğini kontrol et. Kullanıcı bir hedef belirttiyse (bir kanal, dağıtım listesi, karşı taraf avukatı, "herkes"), bunun "avukatlık sırrı / mesleki sır" (Av. K. m.36) kapsamında kalıp kalmadığını sor. Kamuya açık kanallar, şirket geneli listeler, karşı taraf ve vekilleri ile paylaşılan belgeler gizlilik korumasını (privilege) ortadan kaldırabilir. Eğer hedef bu çemberin dışındaysa, kullanıcıyı uyar ve (a) sadece hukukçular için gizli versiyon, (b) geniş kitleler için arındırılmış versiyon seçeneklerini sun.
+
+## Amaç
+
+Gelen Gizlilik Sözleşmelerinin (GS) çoğu standarttır, ancak bazıları riskli hükümler içerir. Bu skill, hukuk biriminin sadece gerçekten riskli olanlara vakit ayırmasını sağlamak için belgeleri bir dakikadan kısa sürede tasnif eder.
+
+**Hedef:** YEŞİL bir GS sadece imza gerektirmelidir. SARI bir GS, bir hukukçunun bir veya iki noktaya bakmasını gerektirir. KIRMIZI bir GS ise riskler giderilmeden durdurulmalıdır.
+
+## Önce Playbook'u Yükle
+
+**Hangi taraf?** İncelemeye başlamadan önce, şirketin bu sözleşmedeki rolünü belirle. Genelde bağlamdan anlaşılır: Eğer karşı taraf sizin ürününüzü inceleyen bir tedarikçi veya iş ortağıysa "bilgi veren/satıcı" tarafındasınız; eğer siz onların ürününü inceliyorsanız "bilgi alan/satın alma" tarafındasınız. Karşılıklı (mutual) sözleşmelerde bile ağırlık merkezi önemlidir. Belirsizse sor. Config içindeki ilgili playbook bölümünü (`### Satici-tarafi-playbook` veya `### Satin-alma-tarafi-playbook`) oku.
+
+**Tasnif yapmadan önce şu dosyayı oku: `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` → `## Playbook` → ilgili taraf → `GS tasnif pozisyonlari`.** Bu bölüm, bir sözleşmeyi bu ekip için neyin YEŞİL, SARI veya KIRMIZI yapacağının tek gerçek kaynağıdır.
+
+Eğer ilgili bölümde bir madde eksikse kullanıcıya sor:
+> Playbook'unuz [madde - örn. "cezai şart", "zamanaşımı süresi", "tek taraflı GS"] konusunu kapsamıyor. Varsayılan pozisyonunuz nedir? Ne zaman YEŞİL, SARI veya KIRMIZI sayılmalı? Bunu `CLAUDE.md` dosyasına ekleyeceğim.
+
+## Kapsam Kontrolü
+
+**GS'ye özgü hükümlere geçmeden önce, belgenin adından fazlasını yapıp yapmadığını kontrol et.** Ticari GS'ler içine şunlar gizlenmiş olabilir: münhasırlık (exclusivity), fikri mülkiyet devri (IP assignment), çalışan ayartmama (non-solicit), rekabet etmeme (non-compete), ilk teklif hakkı (ROFR) veya gizlilikle ilgisi olmayan geniş tahkim şartları.
+
+Sözleşme gizlilik dışında yükümlülükler içeriyorsa: **Analizden bağımsız olarak otomatik SARI.** Bu hükümleri bayrakla işaretle:
+> Bu belge "Gizlilik Sözleşmesi" olarak adlandırılmış ancak [münhasırlık / IP devri / rekabet yasağı / cezai şart] içermektedir. Bu bir GS'den fazlasıdır. Avukat incelemesine yönlendirin.
+
+## Tasnif (Triage)
+
+GS'yi `CLAUDE.md` içindeki pozisyonlara göre üç kategoriye ayır:
+
+### YEŞİL — İmzaya Uygun
+
+Sözleşme, playbook'taki tüm pozisyonları karşılamaktadır. Örn: Karşılıklılık, süre, zamanaşımı, istisnalar, uygulanacak hukuk (Türk Hukuku), yetkili mahkeme.
+
+**YEŞİL kararı avukat onaylı playbook gerektirir.** Hukukçu incelemesi olmadan imza yoluna giren tek kategori budur. Eğer playbook'ta avukat onaylı bir `## GS tasnif pozisyonlari` bölümü yoksa:
+> Playbook'unuzda avukat onaylı pozisyonlar olmadan YEŞİL raporu veremem. Lütfen `/ticari-hukuk:baslangic-mulakati` komutunu çalıştırın.
+
+**Çıktı Formatı:**
+`CLAUDE.md` içindeki avukat çalışma ürünü başlığını (work-product header) ekle.
+
+```markdown
+[AVUKAT ÇALIŞMA ÜRÜNÜ - GİZLİDİR]
+
+## GS Tasnifi: [Karşı Taraf]
+
+DURUM: YEŞİL — İmzaya Uygun
+
+### Yönetici Özeti
+Playbook kapsamında herhangi bir risk (red flag) tespit edilmemiştir. Standart süreç uyarınca imza aşamasına geçilebilir.
+
+| Kontrol | Durum | Playbook Referansı |
+|---|---|---|
+| [Kontrol Kalemi] | Uygun | [(TBK m.X) / CLAUDE.md ilgili bölüm] |
+
+**Sonraki Adım:** [Sözleşme Yönetim Sistemi (CLM)] üzerinden imzaya yönlendirin.
+SARI — Hukukçu İncelemesi Gerekli
+Bir veya daha fazla hüküm playbook'tan sapıyor ancak kesin bir engel teşkil etmiyor.
+
+Çıktı Formatı:
+
+Markdown
+[AVUKAT ÇALIŞMA ÜRÜNÜ - GİZLİDİR]
+
+## GS Tasnifi: [Karşı Taraf]
+
+DURUM: SARI — [İlgili Kişi] İncelemesi Gerekli
+
+### Yönetici Özeti
+- [Aksiyon odaklı kısa not, örn: "Çalışan ayartmama maddesini (Madde 6) çıkarın"]
+- [Aksiyon odaklı kısa not]
+
+### İşaretlenen Maddeler
+**1. [Konu]** — Madde [X]
+   Nedir: [Kısa açıklama]
+   Neden: [Playbook'taki hangi maddeyle çelişiyor?]
+   **Hukuki Risk:** [🔴/🟠/🟡/🟢] | **Ticari Etki:** [Süreçleri yavaşlatır/durdurur]
+   Önerilen Çözüm: [Kabul et / X şeklinde değiştir / Pazarlık et]
+
+**Sonraki Adım:** [İlgili Hukukçu]'ya bu maddeleri sorun, onay verirse imzaya çıkın.
+KIRMIZI — Durun, Önce Hukuk Birimiyle Görüşün
+Sözleşme, playbook'un "asla kabul edilemez" listesindeki bir maddeyi içeriyor (örn. yabancı hukuk seçimi, sınırsız cezai şart, karşılıklılık ilkesinin olmaması).
+
+Çıktı Formatı:
+
+Markdown
+[AVUKAT ÇALIŞMA ÜRÜNÜ - GİZLİDİR]
+
+## GS Tasnifi: [Karşı Taraf]
+
+DURUM: KIRMIZI — Onaylamayın, Hukuk Birimine Yönlendirin
+
+### Kritik Riskler
+**1. [Risk Başlığı]** — Madde [X]
+   > "[Alıntı]"
+   Neden Sorun: [Spesifik risk ve ihlal edilen playbook pozisyonu]
+   **Hukuki Risk:** [🔴] | **Ticari Etki:** [🔴 Kabul edilemez risk]
+   Önerilen Yanıt: [Kendi taslağımızı önerin / Bu maddeyi tamamen silin]
+
+**Sonraki Adım:** Bu raporu [Sorumlu Avukat]'a gönderin. Karşı tarafa imzalanacağı yönünde bilgi vermeyin.
+Revizyon Kuralları (Redline)
+En küçük birim düzeyinde düzenleme yap. Bir revizyon (redline) müzakere aracıdır, yeniden yazım değildir. Maddeyi toptan değiştirmek yerine; bir kelimeyi sil, bir ibare ekle veya bir alt bendi yapılandır.
+
+Kelime değişikliği > Cümle değişikliği.
+
+Cümle değişikliği > Madde değişikliği.
+
+Sadece karşı tarafın taslağı okunamaz haldense maddeyi tamamen değiştir ve şunu ekle: "Madde 8.2'deki değişiklikler çok kapsamlı olduğu için maddeyi yeniden kaleme aldık."
+
+Arabuluculuk Dava Şartı Kontrolü
+Bu GS'den doğabilecek uyuşmazlıkların ticari dava niteliğinde olup olmayacağını değerlendir (TTK m.4, m.5/A).
+
+YAML
+arabuluculuk:
+  dava_sarti: true (Ticari işlerde zorunlu)
+  not: "Bu sözleşmeden doğan tazminat talepleri için dava açmadan önce arabuluculuk zorunludur."
+Yerel Mevzuat ve Alanlar
+Her incelemede şu alanları doldurmaya çalış:
+
+YAML
+uyap_no: "[YIL]/[ESAS NO] (Varsa)"
+muvekkil:
+  ad:
+  vekalet_durumu: verildi | beklemede | yok
+outside_counsel:
+  buro:
+  avukat:
+  baro_sicil_no:
+cezai_sart: "[Var/Yok] - [Tutar TL]"
+zamanasimi_suresi: "(TBK m.146 uyarınca genel süre 10 yıldır; sözleşmedeki süreyi kontrol et)"
+uygulanacak_hukuk: "Türk Hukuku (Önerilen)"
+yetkili_mahkeme: "[Şehir] Mahkemeleri ve İcra Daireleri"
+Bu Skill Ne Yapmaz?
+Müzakere etmez, sadece sınıflandırır.
+
+Yeni bir GS taslağı hazırlamaz. Eğer yanıt "kendi formumuzu kullanalım" ise kullanıcıyı ilgili klasöre yönlendirir.
+
+SARI maddeler için son kararı vermez, karar vericiye veri sunar.
+
+Avukatlık Kanunu m.55 kapsamında reklam yasağına aykırı pazarlama faaliyetleri yürütemez.
+
+Kapanış Aksiyonu
+CLAUDE.md → ## NDA triage preferences → closing_action kısmını oku ve aynen ekle. Eğer yapılandırılmamışsa şunu yaz:
+"Final Gizlilik Sözleşmesini standart onay sürecinizden (UYAP/Fiziksel imza) geçirin."
+
+Karar Ağacı ile Bitir
+Çıktının en sonuna şu seçenekleri ekle:
+
+[X] Maddesini Playbook'a göre revize et.
+
+Hukuk Müşavirine (Sarı bayraklarla) escalate et.
+
+Karşı tarafa "Kendi taslağımızı kullanalım" yanıtı taslakla.
+
+Diğer (Belirtiniz).

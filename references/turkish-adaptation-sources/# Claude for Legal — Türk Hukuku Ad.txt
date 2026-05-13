@@ -1,0 +1,475 @@
+# Claude for Legal — Türk Hukuku Adaptasyon Promptu
+
+
+
+Aşağıya bir SKILL.md dosyası yapıştırıyorum. Bu dosyayı Türk hukuku, Türk yargı sistemi ve Türk avukatlık pratiğine uygun hale getir.
+
+
+
+## Genel Kural
+
+
+
+İngilizce iskelet yapısını koru. Yalnızca hukuki içeriği, örnekleri, alan adlarını ve iş akışlarını Türkleştir. Gereksiz çeviri yapma.
+
+
+
+-----
+
+
+
+## 1. Türk Maddi Hukuku ve Usul Kuralları
+
+
+
+Aşağıdaki ABD/İngiltere hukuku referanslarını Türk karşılıklarıyla değiştir:
+
+
+
+- `FRCP` → HMK (Hukuk Muhakemeleri Kanunu)
+
+- `complaint` → dava dilekçesi
+
+- `answer deadline` → cevap dilekçesi süresi (HMK m.127 — tebligattan itibaren 2 hafta; uzatma talep edilebilir)
+
+- `discovery` → delil ibrazı (HMK m.220)
+
+- `legal hold` → delil tespiti (HMK m.400)
+
+- `subpoena` → celp / bilgi isteme yazısı
+
+- `injunction` → ihtiyati tedbir (HMK m.389)
+
+- `attachment` → ihtiyati haciz (İİK m.257)
+
+- `statute of limitations` → zamanaşımı / hak düşürücü süre
+
+- `consent decree` → sulh / feragat / kabul
+
+- `damages` → tazminat (maddi / manevi)
+
+- `filing` → dava açma / dilekçe sunma
+
+- `motion` → talep / ara karar talebi
+
+- `brief` → dilekçe / savunma
+
+- `pleadings stage` → dilekçeler aşaması
+
+- `discovery stage` → ön inceleme / tahkikat aşaması
+
+- `trial` → yargılama / duruşma
+
+- `judgment` → karar / hüküm
+
+- `appeal` → istinaf (BAM) / temyiz (Yargıtay)
+
+- `settlement` → uzlaşma / sulh
+
+- `arbitration` → tahkim (ISTAC, MTO veya ad hoc)
+
+- `regulatory deadline` → idari başvuru süresi
+
+- `criminal procedure` → CMK (Ceza Muhakemesi Kanunu)
+
+
+
+Para birimi: `$` → TL. Tutar aralıklarını TL cinsinden yaz.
+
+
+
+-----
+
+
+
+## 2. Türk Yargı ve İdari Sistemi
+
+
+
+Mahkeme adlarını şu formatta yaz:
+
+`[Şehir] [Sıra No]. [Tür] Mahkemesi`
+
+
+
+Örnekler:
+
+
+
+- İstanbul 3. Asliye Ticaret Mahkemesi
+
+- Ankara 12. Asliye Hukuk Mahkemesi
+
+- İzmir 2. İş Mahkemesi
+
+- İstanbul 1. Ağır Ceza Mahkemesi
+
+- Ankara 4. İdare Mahkemesi
+
+- İstanbul 2. Sulh Hukuk Mahkemesi
+
+- Danıştay (idari temyiz)
+
+- Yargıtay (hukuk/ceza temyiz)
+
+- Bölge Adliye Mahkemesi / BAM (istinaf)
+
+- Anayasa Mahkemesi (bireysel başvuru)
+
+
+
+İdari merciler:
+
+
+
+- Rekabet Kurumu
+
+- BDDK, SPK, EPDK, BTK (sektörel düzenleyiciler)
+
+- Kişisel Verileri Koruma Kurumu (KVKK)
+
+- Türkiye İş Kurumu (İŞKUR)
+
+- Sosyal Güvenlik Kurumu (SGK)
+
+
+
+UYAP: Her dava kaydına `uyap_no` alanı ekle. UYAP dosya numarası formatı: `[YIL]/[ESAS NO]`
+
+
+
+-----
+
+
+
+## 3. Türk Vekalet ve Avukatlık Hukuku
+
+
+
+### Çıkar Çatışması (Avukatlık Kanunu m.38)
+
+
+
+- `conflicts check` → çıkar çatışması kontrolü (Av. K. m.38)
+
+- `waived` → yazılı feragat zorunludur (Av. K. m.38 kapsamında sözlü feragat geçersiz)
+
+- `engagement letter` → bu kavramı kaldır; Türkiye’de standart değil
+
+- Vekalet için ekle: `vekalet_tarihi`, `vekalet durumu: verildi | beklemede | yok`
+
+
+
+### Avukat Bilgileri
+
+
+
+- `firm` → büro adı
+
+- `lead partner` → sorumlu avukat
+
+- `bar number` → baro sicil numarası (zorunlu alan)
+
+- ABD büro örneklerini (`[ABD hukuk bürosu]` vb.) kaldır; yerine: `[Büro Adı] Avukatlık Bürosu`, `Av. [Ad Soyad]` gibi genel Türk örneği koy
+
+
+
+### Reklam Yasağı (Av. K. m.55, Reklam Yasağı Yönetmeliği)
+
+
+
+- Skill içinde avukatın müvekkil bulmasına yönelik pazarlama, soğuk arama, teklif gönderme gibi akışlar varsa kaldır veya “Avukatlık Kanunu m.55 kapsamında reklam yasağına tabidir” notu ekle
+
+- “Business development”, “lead generation”, “client outreach” adımlarını kaldır
+
+
+
+### Ücret ve Avukatlık Sözleşmesi
+
+
+
+- `contingency fee` → kota yasağı (Av. K. m.164/4 — salt başarı prim sözleşmesi yasaktır; karşılıklı anlaşmayla ek ücret mümkün)
+
+- `billing` → avukatlık ücreti (Asgari Ücret Tarifesi referansı eklenebilir)
+
+- `budget authorization` → ücret mutabakatı
+
+
+
+-----
+
+
+
+## 4. Türk KVKK Kuralları
+
+
+
+- `GDPR` → KVKK (6698 sayılı Kişisel Verilerin Korunması Kanunu)
+
+- `data controller` → veri sorumlusu
+
+- `data processor` → veri işleyen
+
+- `DPA` → veri işleme sözleşmesi
+
+- `DPIA` → Veri Koruma Etki Değerlendirmesi (VKED)
+
+- `data subject rights` → ilgili kişi hakları (KVKK m.11)
+
+- `breach notification` → ihlal bildirimi (KVKK m.12 — 72 saat kuralı)
+
+- `CISO` → KVKK sorumlusu / veri güvenliği sorumlusu
+
+- `data retention` → saklama süresi (KVKK ve ilgili ikincil mevzuat)
+
+- Yurt dışı veri transferi: KVKK m.9 — yeterli koruma kararı veya açık rıza
+
+
+
+-----
+
+
+
+## 5. Türkçe Hukuki Terim ve Tanımlar
+
+
+
+### Taraf sıfatları
+
+
+
+- `plaintiff` → davacı
+
+- `defendant` → davalı
+
+- `claimant` → talep sahibi / alacaklı
+
+- `respondent` → karşı taraf / borçlu
+
+- `investigated` → soruşturulan / şüpheli
+
+- `creditor` → alacaklı
+
+- `debtor` → borçlu
+
+
+
+### Dava türleri
+
+
+
+- `contract` → sözleşme
+
+- `employment` → iş hukuku
+
+- `ip` → fikri mülkiyet
+
+- `regulatory` → idari / düzenleyici
+
+- `investigation` → soruşturma / kovuşturma
+
+- `product` → ürün sorumluluğu
+
+- `enforcement` → icra
+
+
+
+### Kaynak türleri
+
+
+
+- `demand-letter` → ihtarname
+
+- `complaint-served` → dava dilekçesi tebliği
+
+- `subpoena` → celp
+
+- `regulator-inquiry` → idari soruşturma
+
+- `internal-report` → iç bildirim
+
+- `pre-suit-threat` → dava öncesi tehdit
+
+- `enforcement-action` → icra takibi
+
+
+
+### Duruş tespiti
+
+
+
+- `fight` → mücadele
+
+- `settle` → uzlaşma
+
+- `investigate` → soruşturma
+
+- `wait` → bekle
+
+
+
+### Önemlilik
+
+
+
+- `reserved` → karşılık ayrıldı
+
+- `disclosed` → açıklandı
+
+- `monitored` → izleniyor
+
+- `none` → önemsiz
+
+
+
+-----
+
+
+
+## 5b. Arabuluculuk Dava Şartı
+
+
+
+Her dava türü belirlendikten sonra arabuluculuk dava şartı kontrolü ekle:
+
+
+
+- İş hukuku, ticari davalar ve tüketici davaları → zorunlu dava şartı
+
+- Anlaşmazlık tutanağı olmadan dava açılamaz; açılırsa usulden reddedilir
+
+- Tutanaktan itibaren 2 haftalık dava açma süresi başlar — key dates’e otomatik ekle
+
+- Tutanak yoksa dosyayı eksik olarak işaretle, `/portfolio-status` her çalıştığında uyarsın
+
+
+
+```yaml
+
+arabuluculuk:
+
+  dava_sarti: true | false
+
+  surec_isletildi: true | false | devam-ediyor
+
+  anlasmazlik_tutanak_tarihi: YYYY-MM-DD
+
+  dava_acma_son_tarihi: YYYY-MM-DD
+
+  sonuc: anlasmazlik | anlasma | devam-ediyor
+
+```
+
+
+
+-----
+
+
+
+## 6. Kaldırılacak ABD’ye Özgü Yapılar
+
+
+
+Aşağıdakileri SKILL.md’den tamamen çıkar, Türk karşılığı yoksa sil:
+
+
+
+- `internal_owners` bloğu (business lead, HR partner, comms contact, CISO) — Türk hukuk bürolarında bu hiyerarşi yok; sadece müvekkil bilgisi kalır
+
+- `legal hold` — delil tespiti (HMK m.400) ile değiştir; ABD’deki kapsamda kurumsal uygulama yok
+
+- `engagement letter` — kaldır
+
+- `contingency fee` mekanizması — kota yasağı notu ekle, akışı kaldır
+
+- `business development / client outreach` adımları — reklam yasağı nedeniyle kaldır
+
+- ABD mahkeme örnekleri (`N.D. Cal.`, `S.D.N.Y.` vb.) — Türk mahkeme formatıyla değiştir
+
+- ABD büro örnekleri (`[ABD hukuk bürosu]` vb.) — genel Türk örneğiyle değiştir
+
+- `insurance tender` — Türkiye’de zorunlu mesleki sorumluluk sigortası var ama bu akış yok; gerekirse not ekle
+
+- `FTC`, `SEC`, `DOJ`, `EEOC` gibi ABD kurumları — ilgili Türk kurumlarıyla değiştir
+
+
+
+-----
+
+
+
+## 7. Eklenecek Türkiye’ye Özgü Alanlar
+
+
+
+Her uygun SKILL.md dosyasına şu alanları ekle:
+
+
+
+```yaml
+
+uyap_no: "[YIL]/[ESAS NO]"
+
+muvekkil:
+
+  ad:
+
+  iletisim:
+
+  vekalet_tarihi:
+
+outside_counsel:
+
+  buro:
+
+  avukat:
+
+  baro_sicil_no:
+
+  email:
+
+  vekalet: verildi | beklemede | yok
+
+delil_tespiti:
+
+  talep_edildi: true | false
+
+  tarih:
+
+  kapsam:
+
+zamanasimi_tarihi:
+
+ihtiyati_tedbir_suresi:
+
+```
+
+
+
+-----
+
+
+
+## Çıktı Kuralları
+
+
+
+- Dosyanın genel yapısını, bölüm sıralamasını ve YAML şemasını koru
+
+- Slug örneklerini Türkçe yap: `abc-alacak-2026`, `is-davasi-yilmaz-2026`
+
+- Para birimini TL yap
+
+- Kanun maddeleri için parantez içinde kısaltma ekle: `(HMK m.127)`, `(Av. K. m.38)`, `(KVKK m.11)`
+
+- “What this skill does not do” bölümünü Türkçe yaz
+
+- Confirm / onay mesajlarını Türkçe yaz
+
+- metin çok uzun ise 50 şer satır inceleyip düzeltmeleri yapıp sonraki 50 satıra geçebilirsin
+
+-----
+
+
+
+Dosya adını Türkçeye çevirerek “Dosya Adı SKILL.md” dosyasını buraya

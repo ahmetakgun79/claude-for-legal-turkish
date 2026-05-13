@@ -1,0 +1,8 @@
+{
+  "name": "regulatory-legal",
+  "version": "1.0.2-tr",
+  "description": "Turkiye icin Resmi Gazete, Mevzuat Bilgi Sistemi ve kurum duyurulari uzerinden regulasyon izleme, politika diff, gap takibi ve taslak/gorus sureci yonetimi.",
+  "author": {
+    "name": "Legal Turkish Adaptation"
+  }
+}

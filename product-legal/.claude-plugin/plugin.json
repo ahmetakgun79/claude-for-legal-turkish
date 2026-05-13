@@ -1,0 +1,8 @@
+{
+  "name": "product-legal",
+  "version": "1.0.2-tr",
+  "description": "Turk urun hukuku icin lansman incelemesi, pazarlama iddialari, e-ticaret/abonelik, KVKK, sektor regulasyonu ve hizli product counsel triage akislari.",
+  "author": {
+    "name": "Legal Turkish Adaptation"
+  }
+}

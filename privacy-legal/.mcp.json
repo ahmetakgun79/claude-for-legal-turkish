@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "Google Drive": {
+      "type": "http",
+      "url": "https://drivemcp.googleapis.com/mcp/v1",
+      "title": "Google Drive",
+      "description": "Google Drive'da arama yapın, belgeleri okuyun ve getirin. (Önemli: Özel Nitelikli Kişisel Veri aktarımına dikkat)."
+    },
+    "Slack": {
+      "type": "http",
+      "url": "https://mcp.slack.com/mcp",
+      "title": "Slack",
+      "description": "Mesajlarda arama yapın, kanalları okuyun, şirket içi tartışmaları bulun. (KVKK'ya dikkat ediniz)."
+    },
+    "Yargı MCP": {
+      "type": "http",
+      "url": "https://yargimcp.surucu.dev/mcp",
+      "title": "Yargı MCP",
+      "description": "Yargıtay, Danıştay, Anayasa Mahkemesi, KVKK, Rekabet Kurumu, Sayıştay gibi Türk Hukuk kaynaklarına, mahkeme ve daire kararlarına doğrudan ve filtreli erişim sağlar."
+    }
+  },
+  "recommendedCategories": [
+    "documents",
+    "chat",
+    "email",
+    "legal-document-management"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "name": "legal-turkish",
+  "owner": {
+    "name": "Legal Turkish Adaptation"
+  },
+  "plugins": [
+    {
+      "name": "commercial-legal",
+      "source": "./commercial-legal",
+      "description": "Kısmen uyarlanmış Türk hukuku sürümü. Tedarikçi sözleşmesi, gizlilik sözleşmesi, SaaS/abonelik, tadil geçmişi, yenileme ve fesih takibi, eskalasyon, dosya çalışma alanı ve iş birimi özeti skill'leri Türk ticari hukuk pratiğine göre güncellendi. README, CLAUDE profili, ajanlar ve kalan yardımcı akışlar ayrıca gözden geçirilecek.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "privacy-legal",
+      "source": "./privacy-legal",
+      "description": "Tamamlanmış ilk tur KVKK sürümü. Veri işleme faaliyeti triyajı, VKED/PIA, veri işleyen/DPA incelemesi, ilgili kişi başvurusu, politika/aydınlatma drift takibi, yurt dışına aktarım, veri ihlali ve regülasyon gap analizi KVKK, Kurul uygulaması, VERBIS, İYS/çerez ve Türkiye sektör regülasyonları çerçevesine alındı.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "product-legal",
+      "source": "./product-legal",
+      "description": "Tamamlanmış ilk tur Türk ürün hukuku sürümü. Lansman incelemesi, pazarlama iddiaları, hızlı PM triage, özellik risk değerlendirmesi ve launch watcher akışları 6502 tüketici hukuku, ticari reklam ve haksız ticari uygulamalar, 6563 e-ticaret, KVKK, İYS/çerez, sektör düzenleyicileri, ürün güvenliği ve AI/otomasyon kapılarına göre güncellendi.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "corporate-legal",
+      "source": "./corporate-legal",
+      "description": "Kısmen uyarlanmış Türk hukuku sürümü. README, CLAUDE profili, başlangıç mülakatı, board minutes, karar taslağı, entity compliance, M&A diligence, closing checklist, material contract schedule, integration management ve dataroom watcher akışları TTK, SPK/KAP/MKK, MERSİS, Ticaret Sicili, KVKK ve Rekabet pratiğine göre güncellendi. Yardımcı tablo/özet/reference dosyalarında ikinci tur polish yapılabilir.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "employment-legal",
+      "source": "./employment-legal",
+      "description": "Tamamlanmış ilk tur Türk iş hukuku sürümü. İşe alım, iş sözleşmesi, fesih, işçilik alacağı, SGK çıkış kodu, zorunlu arabuluculuk, ücret/çalışma süresi, izin/rapor, işçi/bağımsız çalışan/alt işveren sınıflandırması, iç soruşturma, İSG, KVKK ve personel politikaları Türkiye uygulamasına göre güncellendi.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "regulatory-legal",
+      "source": "./regulatory-legal",
+      "description": "Tamamlanmış ilk tur Türk regulatory sürümü. Düzenleyici izleme, politika fark analizi, gap tracker, taslak/kamuoyu görüşü takibi ve reg-change-monitor akışları Resmî Gazete, Mevzuat Bilgi Sistemi, KVKK, Rekabet Kurumu, SPK, BDDK, BTK, EPDK, TCMB, Ticaret Bakanlığı, MASAK ve sektör kurumları ekseninde güncellendi.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "ai-governance-legal",
+      "source": "./ai-governance-legal",
+      "description": "Kısmen uyarlanmış; tamamlanmadı. Vendor AI review ve use-case triage akışlarında KVKK, FSEK, TTK ticari sır, yurt dışına aktarım ve Türkiye AI yönetişimi katmanı var; README/CLAUDE, AIA, reg-gap, policy-starter ve policy-monitor çekirdeğinde EU AI Act/Colorado/ABA/NIST/US kalıntıları temizlenecek.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "litigation-legal",
+      "source": "./litigation-legal",
+      "description": "Tamamlanmış ilk tur Türk hukuku sürümü. Başlangıç mülakatı, dava dosyası intake, dilekçe bölümü, kronoloji, unsur/istem tablosu, ihtarname akışları, delil saklama/delil tespiti, müzekkere triyajı, isticvap/tanık hazırlığı, Av.K. m.36 gizlilik incelemesi, portföy/dış büro raporlaması ve UYAP docket-watcher Türk yargı ve avukatlık pratiğine göre güncellendi.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "law-student",
+      "source": "./law-student",
+      "description": "Uyumsuz / kapsam dışı. Orijinal law-student plugin'i ABD hukuk eğitimi, bar prep, MBE/UBE/NextGen, case brief, IRAC ve Socratic/cold-call varsayımlarına dayanır. Türk hukuk fakültesi, HMGS/İYÖS, pratik çalışma ve mevzuat-içtihat okuma sistemiyle doğrudan uyumlu olmadığı için Legal Turkish kapsamında uyarlanmayacak.",
+      "author": {
+        "name": "Anthropic / not adapted for Legal Turkish"
+      }
+    },
+    {
+      "name": "legal-clinic",
+      "source": "./legal-clinic",
+      "description": "Ayrık / kapsam dışı. Orijinal US law school clinic modeli Türkiye'de doğrudan karşılığı olmayan ayrı bir yapıdır; Legal Turkish çekirdeğine çevrilmeyecek. İhtiyaç doğarsa klinik/adli yardım odaklı ayrı bir plugin sıfırdan tasarlanmalıdır.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "legal-builder-hub",
+      "source": "./legal-builder-hub",
+      "description": "Kısmen uyarlanmış meta araç. Skill bulma, değerlendirme ve kurulum yapısı korunur; skills-qa ve installer içine Legal Turkish identifier/source path stabilitesi kontrolü eklendi. Allowlist ve güvenlik kontrolleri ayrıca Türk hukuk adaptasyon kriterleriyle genişletilebilir.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "ip-legal",
+      "source": "./ip-legal",
+      "description": "Kısmen uyarlanmış; tamamlanmadı. README/CLAUDE/MCP ve bazı skill'lerde FSEK, SMK, TÜRKPATENT, WIPO, tecavüzün men'i, uyar-kaldır ve Türk gizlilik başlıkları var; takedown, FTO, infringement, invention-intake, portfolio, cease-desist, OSS ve yardımcı dosyalarda US/DMCA/USPTO/patent framework kalıntıları temizlenecek.",
+      "author": {
+        "name": "Legal Turkish Adaptation"
+      }
+    },
+    {
+      "name": "cocounsel-legal",
+      "source": "./external_plugins/cocounsel-legal",
+      "description": "Harici ve opsiyonel üçüncü taraf plugin. Westlaw/Practical Law kaynaklarına dayalıdır ve Türk hukuk adaptasyonunun parçası olarak değiştirilmemiştir. Türk hukuku çıktısı gibi kabul edilmemelidir.",
+      "author": {
+        "name": "Thomson Reuters"
+      }
+    }
+  ]
+}

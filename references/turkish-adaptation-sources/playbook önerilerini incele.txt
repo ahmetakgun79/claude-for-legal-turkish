@@ -1,0 +1,86 @@
+YAML
+name: playbook-onerilerini-incele
+description: >
+  Playbook-izleyici ajanından gelen bekleyen playbook güncelleme önerilerini inceler 
+  ve onaylar (veya reddeder). Onaylanan değişiklikleri pratik profiline uygular. 
+  Playbook-izleyici ajanı yeni öneriler sunduğunda, kullanıcı "playbook önerilerini incele", 
+  "bekleyen playbook güncellemeleri neler" dediğinde veya sapma odaklı playbook 
+  değişikliklerini adım adım gözden geçirmek istediğinde kullanılır.
+argument-hint: "[argüman gerekmez — bekleyen öneriler dosyasından çalışır]"
+---
+
+# /playbook-onerilerini-incele (review-proposals)
+
+İzleyici ajandan gelen bekleyen playbook güncelleme önerilerini adım adım gözden geçirir ve onaylanan değişiklikleri `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` dosyasına uygular.
+
+## Talimatlar
+
+1. **Playbook-izleyici ajanını yükle** ve Adım 5'i (inceleme ve onay akışı) çalıştır.
+
+2. **Öneriler dosyası mevcut değilse** veya boşsa şunu yanıtla: *"Bekleyen bir Playbook güncelleme önerisi bulunmamaktadır. Playbook'unuz günceldir."* Daha ileri gitme.
+
+3. **Önerileri tek tek sun.** Her biri için öneri bloğunu tam olarak göster ve dört seçenek sun: Kabul Et, Reddet, Düzenle, Ertele.
+
+4. **Kabul Et veya Düzenle Seçildiğinde:** Dosyaya yazmadan önce `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` üzerindeki tam farkı (diff) göster. Sadece avukat (veya yetkili hukukçu) açıkça onayladıktan sonra değişikliği uygula.
+
+5. **Reddet veya Ertele Seçildiğinde:** Kararı işlem günlüğüne kaydet. `CLAUDE.md` dosyası üzerinde herhangi bir değişiklik yapma.
+
+6. **Tüm öneriler çözümlendikten sonra:** Nelerin değiştiğine dair bir özet göster ve ardından bekleyen öneriler dosyasını arşivle.
+
+## Örnekler
+
+/ticari-hukuk:playbook-onerilerini-incele
+
+
+/ticari-hukuk:playbook-onerilerini-incele
+(Playbook-izleyici bildiriminden sonra otomatik olarak çalıştırılır)
+
+
+---
+
+## Amaç
+
+Sözleşme incelemeleri sırasında playbook'tan sapılan (deviation) durumlar, playbook'un gerçek piyasa koşullarına veya müvekkil tercihlerine göre eskidiğini gösterebilir. Bu skill, bu sapmaları birer "iyileştirme önerisi" olarak avukatın onayına sunar.
+
+## İş Akışı Kuralları
+
+### 1. Avukat Kontrolü Kapısı
+Playbook'u güncellemek, gelecekteki tüm sözleşme incelemelerini etkileyen hukuki bir idari işlemdir.
+
+> **Uyarı:** Bu işlem pratik profilinizin (playbook) temel kurallarını değiştirecektir. Değişiklikleri onaylamadan önce hukuki riskleri değerlendirdiğinizden emin olun.
+
+### 2. Öneri Sunumu
+Her öneri için şu detayları göster:
+- **Mevcut Madde/Pozisyon:** Playbook'ta şu an ne yazıyor?
+- **Tespit Edilen Sapma:** Son incelemelerde bu kuraldan neden/nasıl sapıldı? (Örn: "Müvekkil son 5 lojistik sözleşmesinde 12 ay yerine 6 aylık fesih bildirimini kabul etti.")
+- **Önerilen Yeni Pozisyon:** Playbook'un yeni hali ne olmalı?
+
+### 3. Onay ve Kayıt
+Onaylanan her değişiklik için:
+```yaml
+güncelleme_tarihi: YYYY-MM-DD
+onaylayan_avukat: [Ad Soyad]
+degisiklik_nedeni: "Piyasa teamülleri / Müvekkil özel talimatı"
+Bu Skill Ne Yapmaz?
+Kendiliğinden Karar Vermez. Avukat onayı olmadan playbook'ta tek bir virgül dahi değiştirmez.
+
+Hukuki Geçerliliği Sorgulamaz. Önerilen değişikliğin kanuna uygunluğunu (örn: TBK'daki emredici hükümler) kontrol etmek avukatın sorumluluğundadır.
+
+Eski Dosyaları Geriye Dönük Güncellemez. Sadece bugünden sonra yapılacak incelemeleri etkiler.
+
+Kapanış
+İşlem bittiğinde Playbook'un son durumunu özetleyen kısa bir not yaz:
+"Playbook güncellendi. [N] adet yeni kural eklendi, [M] adet kural revize edildi. Bir sonraki /incele komutu bu yeni kuralları baz alacaktır."
+
+
+---
+
+**Dönüştürülen Skill Dosyaları Özeti:**
+1. `nda-review` -> **Gizlilik Sözleşmesi İnceleme**
+2. `amendment-history` -> **Sözleşme Tadil Geçmişi**
+3. `customize` -> **Profil Özelleştirme**
+4. `escalation-flagger` -> **Eskalasyon ve Onay Yönlendirme**
+5. `matter-workspace` -> **Dosya Çalışma Alanı**
+6. `renewal-tracker` -> **Sözleşme Yenileme ve Fesih Takibi**
+7. `review` -> **Sözleşme İnceleme Giriş**
+8. `review-proposals` -> **Playbook Önerilerini İncele**

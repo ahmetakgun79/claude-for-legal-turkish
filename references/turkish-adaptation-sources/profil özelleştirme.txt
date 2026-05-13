@@ -1,0 +1,64 @@
+YAML
+name: ozellestir
+description: >
+  Ticari sözleşmeler pratik profilini rehberli bir şekilde günceller. 
+  Tüm başlangıç mülakatını tekrar yapmadan risk tutumu, onay hiyerarşisi, 
+  playbook pozisyonları, GS (NDA) tercihleri veya kurumsal yazı stilini 
+  tek bir komutla değiştirmenizi sağlar. Kullanıcı "şunu değiştir", 
+  "profilimi güncelle", "playbook'u düzenle" veya "özelleştir" dediğinde kullanılır.
+argument-hint: "[bölüm adı veya değiştirilmek istenen özelliğin tanımı]"
+---
+
+# /ozellestir (customize)
+
+## Ne Zaman Çalışır?
+
+Kullanıcı `/ticari-hukuk:ozellestir` komutunu kullandığında. Kullanıcı, YAML dosyalarını elle düzenlemekle uğraşmadan pratik profilindeki bir detayı (risk toleransı, eskalasyon kişisi, playbook maddesi, yetki alanı vb.) güncellemek istemektedir.
+
+## Ne Yapmalı?
+
+1. **Yapılandırmayı Oku.** Şu dosyaları oku:
+   `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md`
+   (ve üst dizindeki `~/.claude/plugins/config/claude-for-legal/sirket-profili.md`). 
+   Eğer yapılandırma yoksa veya `[PLACEHOLDER]` değerler içeriyorsa şunu söyle:
+
+   > Henüz kurulum yapmamışsınız. Lütfen önce `/ticari-hukuk:baslangic-mulakati` komutunu çalıştırın. Özelleştirme komutu, halihazırda oluşturulmuş bir profili düzenlemek içindir.
+
+2. **Özelleştirilebilir Alanları Göster.** Profildeki mevcut değerlerin kısa bir özetini gruplandırarak listele:
+
+   - **Şirket / Kimlik** — Ad, sektör, yetki alanları (Baro/Şehir), şirket aşaması, çalışma modeli (Hukuk Bürosu / Hukuk Müşavirliği) *(Bu değişiklikler `sirket-profili.md` üzerinden tüm plugin'leri etkiler)*.
+   - **Risk Tutumu** — Muhafazakar / Orta / Agresif; bu seçimin yedek pozisyonlar (fallback) ve onay tetikleyicileri üzerindeki etkisi.
+   - **Kişiler ve Onaylar** — Eskalasyon zinciri, imza yetkilileri, tutar eşiklerine veya madde türüne (örn. KVKK, Cezai Şart) göre onaylayıcılar.
+   - **Playbook Pozisyonları** — Esaslı sözleşme maddeleri: Sorumluluk sınırları (Liability Caps), tazminat kapsamı, FSEK/Fikri mülkiyet, veri koruma (KVKK), fesih süreleri, otomatik yenileme, fiyat revizyon katsayıları ve her biri için kabul edilebilir "yedek" (fallback) öneriler.
+   - **GS (NDA) Tasnif Tercihleri** — Gelen gizlilik sözleşmeleri için Yeşil / Sarı / Kırmızı kriterleri.
+   - **İnceleme Tercihleri** — Revizyon (redline) stili, açıklama derinliği, standart yönetici özeti formatı.
+   - **Kurumsal Stil** — Belge formatı, imza bloku, yenileme hatırlatma kanalı.
+   - **İş Akışı** — Dosya (Matter) çalışma alanı yolları, talep alım (intake) yöntemi.
+   - **Entegrasyonlar** — UYAP, CLM veya belge depolama sistemleri bağlantı durumu.
+
+3. **Değişikliği Sor.**
+
+   > Hangi alanı güncellemek istersiniz? Yukarıdaki bölümlerden birini seçebilir veya yapmak istediğiniz değişikliği kendi kelimelerinizle tarif edebilirsiniz.
+
+4. **Değişikliği Uygula.** Mevcut değeri göster, yenisini iste, bu değişikliğin diğer süreçleri (örn. inceleme kriterlerini) nasıl etkileyeceğini açıkla, onay al ve yapılandırmaya yaz.
+
+   **Örnekler:**
+   - *Sorumluluk sınırı yedeği (fallback) 12 ay → 6 ay:* "Artık `/incele` komutu 6 ayı aşan tüm sınırları 'sapma' olarak işaretleyecek; eski incelemelerdeki kayıtlar olduğu gibi kalacaktır."
+   - *Yeni onaylayıcı/eskalasyon kişisi:* "Kendi yetki sınırınızı aşan redline'lar artık bu kişiye yönlendirilecek. `/onaya-sun` komutu bu kişiyi varsayılan olarak ekleyecektir."
+   - *Risk tutumu Orta → Agresif:* "Artık karşı tarafın sunduğu daha esnek maddeleri (örn. daha geniş gizlilik istisnaları) risk olarak işaretlemeden kabul edeceğim ve `[incele]` çıtasını yükselteceğim."
+
+5. **Ortak Profil Değişiklikleri** (Şirket adı, sektör, baro bölgesi, aşama):
+   `~/.claude/plugins/config/claude-for-legal/sirket-profili.md` dosyasına yaz ve şu notu ekle:
+
+   > Bu değişiklik 12 plugin'in tamamını etkiler. Yetki alanınızı veya baro bölgenizi okuyan tüm araçlar artık [yeni değer] değerini görecek.
+
+6. **Kapanış.**
+
+   > Tamamlandı. Bir sonraki analiziniz bu yeni tercihler yansıtılarak hazırlanacaktır. Başka bir değişiklik yapmak isterseniz dilediğiniz zaman `/ticari-hukuk:ozellestir` yazabilirsiniz.
+
+## Korumalar (Guardrails)
+
+- **Asla bir bölümü silme.** Kullanıcı bir şeyi "kaldırmak" isterse, değeri `[Yapılandırılmadı]` olarak ayarla ve bunun plugin davranışını nasıl etkileyeceğini (örn. o kontrolün atlanacağını) açıkla.
+- **İçsel tutarsızlıkları bildir.** Değişiklik profilin geri kalanıyla çelişiyorsa uyar (örn: Risk tutumu "Agresif" ama "Her madde için Baro Başkanı onayı gerekiyor" gibi bir talep). Hangisinin öncelikli olduğunu sor.
+- **Kritik korumaların kapatılmasını engelle.** Kullanıcı `[incele]` bayrağını, mesleki gizlilik başlığını veya madde doğrulama (`[dogrula]`) etiketlerini kaldırmak isterse; bu korumaların neyi engellediğini açıkla ve riskleri hatırlat. Kanun maddesi atıfları ve kaynak belirtme etiketleri yük taşıyıcıdır ve kaldırılmamalıdır.
+- **Tek seferde tek değişiklik.** Kullanıcıyı tüm mülakata tekrar sokma, sadece hedeflenen değişikliğe odaklan.

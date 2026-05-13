@@ -1,0 +1,131 @@
+YAML
+name: eskalasyon-ve-onay-yonlendirme
+description: >
+  Bir sözleşme maddesini veya riskini, `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` 
+  içindeki onay matrisine göre doğru onay makamına yönlendirir ve talep taslağını hazırlar. 
+  Kullanıcı "bunu kim onaylamalı", "bu maddeyi eskalasyona gönder", "Hukuk Müşavirinin onayı 
+  gerekiyor mu", "onaya sun" dediğinde veya bir incelemede yetkiyi aşan bir risk 
+  bulunduğunda kullanılır.
+argument-hint: "[sorunu tanımlayın veya bir inceleme raporuna atıf yapın]"
+---
+
+# /eskalasyon-ve-onay-yonlendirme (escalation-flagger)
+
+Sözleşme risklerini `CLAUDE.md` içindeki eskalasyon matrisine göre eşleştirir, onaylayacak kişiyi belirler ve saat 17:00'de "vaktiniz var mı?" diye mesaj yazmak zorunda kalmamanız için profesyonel bir talep taslağı hazırlar.
+
+## Talimatlar
+
+1. **`CLAUDE.md` dosyasını yükle** → `## Eskalasyon ve Onay Matrisi` bölümünü oku. Eğer eksikse kullanıcıyı uyar; profilin düzenlenmesi gerekir.
+
+2. **Sorunu Gruplandır:** Tutar eşiği / Playbook sapması / Otomatik tetikleyici / Ticari karar.
+
+3. **Matrisle Eşleştir, Onaylayıcıyı İsmen Belirle:** "Hukuk yönetimi" gibi genel bir tabir yerine, spesifik bir kişi veya unvan (örn. "Başhukuk Müşaviri", "Finans Direktörü") belirt.
+
+4. **Talebi Taslakla:** Aşağıdaki şablonu kullan: Sözleşme ne diyor, Playbook ne istiyor, önerilen seçenekler ve son karar tarihi.
+
+5. **Asla Gönderme:** Taslağı hazırla, göster; avukatın kontrolünden sonra manuel gönderilmesini sağla.
+
+---
+
+## Dosya Bağlamı (Matter Context)
+
+**Dosya Bağlamı.** Büro/Müşavirlik düzeyindeki CLAUDE.md dosyasında `## Matter workspaces` bölümünü kontrol et. Aktif bir dosya yoksa dosya bağlamı için `/ticari-hukuk:dosya-alani switch <slug>` komutunu öner. Çıktıları ilgili dosya klasörüne (`~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/<dosya-slug>/`) yaz.
+
+---
+
+## Amaç
+
+Her hukuk ekibinin, yazılı olsun veya olmasın, bir onay hiyerarşisi vardır. Bu skill, `CLAUDE.md` içindeki yazılı kuralları okur, sözleşmedeki riskle eşleştirir ve kararı verecek olan kişiye sunulmak üzere hazır bir metin oluşturur.
+
+## Matrisi Yükle
+
+**Hangi taraf?** Matrisi eşleştirmeden önce şirketin tarafını (Satıcı/Alıcı) belirle. Bir hüküm bir tarafta kabul edilebilirken diğerinde otomatik eskalasyon nedeni olabilir. Talebi hazırlarken hangi playbook'un (Satın Alma/Satış) baz alındığını belirt.
+
+`~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` → `## Eskalasyon` bölümünü oku. Beklenen yapı:
+
+| Onay Yetkisi | Eşik Değeri (TL) | Eskalasyon Makamı | Kanal |
+|---|---|---|---|
+| Stajyer / Jr. Avukat | Standart maddeler, < 1M TL | Kıdemli Avukat | Teams / Slack |
+| Kıdemli Avukat | Yedek (fallback) maddeler, < 10M TL | Hukuk Müşaviri | E-posta |
+| Hukuk Müşaviri | Tüm sapmalar, > 10M TL | Genel Müdür / YK | Resmi Not |
+
+Ayrıca **otomatik eskalasyon tetikleyicileri** (örn: Sınırsız sorumluluk, FSEK haklarının devri, rekabet yasağı) kontrol edilmelidir.
+
+## İş Akışı
+
+### Adım 1: Sorunu Tanımla
+
+Neyin onaya sunulması gerekiyor?
+- **Tutar Eşiği:** Sözleşme değeri birinin imza yetkisini aşıyor mu?
+- **Hüküm Sapması:** Madde, playbook yedek pozisyonlarının (fallbacks) dışına mı çıkıyor?
+- **Otomatik Tetikleyici:** "Asla kabul etme" listesindeki bir madde mevcut mu?
+- **Ticari Karar:** Hukuki bir riskten ziyade iş biriminin alması gereken bir karar mı?
+
+### Adım 2: Matrisle Eşleştir
+
+- Bu bir otomatik tetikleyici mi? → EVET: [İlgili Kişi]'ye yönlendir.
+- Sözleşme bedeli mevcut yetki sınırının üzerinde mi? → EVET: O tutarda yetkili kişiye yönlendir.
+- Sapma, tüm dökümante edilmiş yedek pozisyonların dışında mı? → EVET: Standart dışı madde onaylayıcısına yönlendir.
+
+### Adım 3: Onaylayıcıyı İsmen Belirle
+
+Spesifik ol. `CLAUDE.md` içindeki isim veya rolü kullan. Eğer matriste bu durum için kimse tanımlanmamışsa: "Eskalasyon matrisi [durum] konusunu kapsamıyor. [Başhukuk Müşaviri] adına bu konunun kime ait olduğunu sormanızı öneririm." de.
+
+### Adım 4: Talep Taslağını Hazırla
+
+Onaylayıcı, sözleşmeyi tekrar açmak zorunda kalmadan sadece bu mesajla karar verebilmelidir.
+
+```markdown
+**Onay Makamı:** [İsim / Unvan]
+**İletişim Kanalı:** [E-posta / Kurumsal Mesajlaşma / Toplantı]
+**Aciliyet:** [Varsa son tarih]
+
+---
+
+Sayın [İsim],
+
+[Karşı Taraf] ile akdedilmesi planlanan [Sözleşme Türü] hakkında onayınıza ihtiyaç duyulmaktadır. [İşin bağlamı hakkında tek cümle].
+
+**Sözleşmedeki Risk:** [Sade Türkçe ile açıklama. Karşı taraf ne istiyor, standart prosedürümüzden neden sapıyoruz ve gerçek risk nedir?]
+
+**Sözleşme Maddesi:**
+> "[Maddenin tam alıntısı]"
+
+**Playbook Pozisyonumuz:** [CLAUDE.md içindeki ilgili pozisyonun alıntısı]
+
+**Seçenekler:**
+1. **Kabul Etmek** — [Neden kabul edilebileceğine dair kısa not]
+2. **Revize Etmek / Karşı Öneri Sunmak:** "[Önerilen karşı metin]" — [Karşı tarafın muhtemel tepkisi]
+3. **Müzakereyi Durdurmak** — [İşin ticari bağlamı açısından bu kararın gerçekçiliği]
+
+**Hukuki Tavsiyem:** [Kısa ve net bir şekilde hangi seçeneğin neden tercih edilmesi gerektiği]
+
+**Karar Beklenen Tarih:** [Tarih]
+
+[Tam İnceleme Raporuna Link]
+Kalibrasyon: Şüpheye Düştüğünde Notla Eskale Et
+Gereksiz bir eskalasyonun maliyeti onaylayıcının 30 saniyesidir. Kaçırılan bir eskalasyonun maliyeti ise onaysız bir riskin altına imza atmaktır. Şüphe durumunda eskalasyon yap.
+
+Yedek (fallback) aralığında: Eskalasyon gerekmez.
+
+Aralık dışında veya otomatik listede: Eskale et.
+
+Belirsiz: Madde muğlaksa veya "zorlamayla" yedeğe uyuyorsa, belirsizliği açıkça belirterek eskale et.
+
+Bu Skill Ne Yapmaz?
+Hiçbir şeyi kendisi onaylamaz. Sadece yönlendirir.
+
+Seçenekler arasında kararı kendisi vermez. Tavsiye sunar ancak son söz onaylayıcınındır.
+
+Mesajı kendisi göndermez. Taslağı avukatın kontrolüne sunar.
+
+Kapanış
+CLAUDE.md → ## Çıktı Kuralları uyarınca karar ağacı ile bitir:
+
+Talebi [Onaylayıcı]'ya gönderilmek üzere kopyala.
+
+Talebi [Hukuk Müşaviri] için daha teknik bir dille yeniden yaz.
+
+Bu madde için Playbook'taki yedek pozisyonları tekrar kontrol et.
+
+Diğer (Belirtiniz).

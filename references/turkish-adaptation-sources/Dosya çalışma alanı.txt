@@ -1,0 +1,159 @@
+YAML
+name: dosya-alani
+description: >
+  Dosya çalışma alanlarını yönetir — yeni dosya açma, listeleme, dosyalar arası geçiş, 
+  dosya kapatma veya genel pratik düzeyine dönme. Çok müvekkilli çalışan avukatların/büroların 
+  her müvekkil veya iş (engagement) için ayrı bir bağlam oluşturmasını, aktif dosyayı 
+  değiştirmesini veya dosyaları arşivlemesini sağlar.
+argument-hint: "<yeni | liste | gec | kapat | yok> [slug]"
+---
+
+# /dosya-alani (matter-workspace)
+
+Avukatlar birden fazla müvekkil ve dosya ile çalışır. Bir dosya çalışma alanı (workspace), bir müvekkilin veya işin bağlamını diğerlerinden ayrı tutar. Bu komut, söz konusu çalışma alanlarını yönetir.
+
+## Alt Komutlar
+
+- `/ticari-hukuk:dosya-alani yeni <slug>` — yeni bir dosya çalışma alanı oluşturur, kısa bir alım (intake) mülakatı yapar ve `dosya.md` dosyasını yazar.
+- `/ticari-hukuk:dosya-alani liste` — dosyaları durumları ve aktiflik bayraklarıyla birlikte listeler.
+- `/ticari-hukuk:dosya-alani gec <slug>` — aktif dosyayı ayarlar.
+- `/ticari-hukuk:dosya-alani kapat <slug>` — bir dosyayı arşivler (`~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/_arsiv/` altına taşır, asla silmez).
+- `/ticari-hukuk:dosya-alani yok` — aktif bir dosyadan ayrılır, sadece büro/pratik düzeyinde çalışır.
+
+## Talimatlar
+
+1. `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/CLAUDE.md` dosyasını oku — `## Matter workspaces` bölümünün dolu olduğunu teyit et. Eğer `Enabled` değeri `✗` ise kullanıcıya şunu söyle: "Dosya çalışma alanları kapalı. Kurum içi (in-house) hukuk müşavirliği olarak yapılandırıldığınız için eklenti otomatik olarak genel pratik bağlamında çalışır. Eğer birden fazla müvekkille/şirketle çalışıyorsanız, `/ticari-hukuk:baslangic-mulakati --redo` komutunu çalıştırarak 'Hukuk Bürosu' ayarını seçin."
+2. Aşağıdaki alt komut mantığını kullan.
+3. `$ARGUMENTS` içindeki ilk öğeye göre işlem yap:
+   - `yeni` → Alım mülakatını başlat, `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/<slug>/dosya.md` dosyasını oluştur, `tarihce.md` ve `notlar.md` dosyalarını hazırla.
+   - `liste` → `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/*/dosya.md` dosyalarını tara, bir tablo yazdır ve aktif dosyayı işaretle.
+   - `gec` → Genel `CLAUDE.md` içindeki `Active matter:` satırını güncelle.
+   - `kapat` → `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/<slug>/` klasörünü `_arsiv/<slug>/` altına taşı, `tarihce.md` içine kapanış tarihini işle.
+   - `yok` → `Active matter:` değerini `yok — sadece genel pratik bağlamı` olarak ayarlar.
+4. Değişikliği kullanıcıya göster ve yazmadan önce onay al.
+
+## Notlar
+
+- Genel `CLAUDE.md` içinde `Cross-matter context` (Dosyalar arası bağlam) `on` değilse, bu skill asla diğer dosyaların verisini okumaz.
+- Arşivleme silme değildir; kapatılan dosyalar saklama yükümlülüğü ve çıkar çatışması (conflicts check) kontrolleri için okunabilir kalır.
+- Sluglar küçük harf ve tire içermelidir. Örnek: `abc-alacak-2026`, `is-davasi-yilmaz-2026`.
+
+---
+
+## Depolama Yapısı
+
+Tüm dosya verileri şurada tutulur:
+
+~/.claude/plugins/config/claude-for-legal/ticari-hukuk/
+├── CLAUDE.md                       # Büro/Pratik düzeyi genel profil
+└── dosyalar/
+├── /
+│   ├── dosya.md                # Müvekkil, karşı taraf, UYAP No, ana vakıalar, sapmalar
+│   ├── tarihce.md              # Tarihli olay günlüğü, kararlar, taslaklar, incelemeler
+│   ├── notlar.md               # Serbest çalışma notları
+│   └── ciktilar/               # Bu dosyaya özel üretilen belgeler (isteğe bağlı)
+└── _arsiv/
+└── /                 # Kapatılmış dosyalar — okunabilir ama aktif değil
+
+
+## Alt Komut Mantığı
+
+### `yeni <slug>`
+
+1. Slug'ın mevcut veya arşivlenmiş dosyalarda olup olmadığını kontrol et. Varsa kullanıcıdan farklı bir isim iste.
+2. Alım (Intake) mülakatını başlat:
+   - **Müvekkil** (Temsil edilen kişi/kurum)
+   - **Karşı Taraf** (Davalı, borçlu veya sözleşmenin diğer tarafı)
+   - **UYAP No** (`[YIL]/[ESAS NO]` formatında; henüz yoksa "Beklemede" yaz)
+   - **Dosya Türü** (Ticari sözleşme | İş davası | Alacak davası | İcra takibi | KVKK uyum | Diğer)
+   - **Arabuluculuk Dava Şartı** (Zorunlu mu? Süreç başlatıldı mı?)
+   - **Gizlilik Seviyesi** (Standart | Yüksek | Mesleki Sır - Kısıtlı Erişim)
+   - **Ana Vakıalar** (2–5 cümle: Dosyanın özeti, paydaşlar, riskler)
+   - **Dosyaya Özel Sapmalar** (Örn: "Müvekkil bu dosyada 12 ay değil 24 aylık tazminat limiti istiyor", "Karşı taraf stratejik ortak — üslup yumuşak olmalı")
+   - **İlgili Dosyalar** (Bağlantılı diğer dosyaların slugları)
+3. `dosyalar/<slug>/dosya.md` dosyasını aşağıdaki şablonla oluştur.
+4. `tarihce.md` dosyasını "Açıldı" girişiyle başlat.
+5. Boş bir `notlar.md` oluştur.
+6. Otomatik geçiş yapma. Sor: "Bu dosyaya şimdi geçmek ister misiniz? (`/ticari-hukuk:dosya-alani gec <slug>`)"
+
+### `liste`
+
+`dosyalar/*/dosya.md` dosyalarını tara. Tablo formatında sun:
+
+| Slug | Müvekkil | UYAP No | Dosya Türü | Durum | Aktif |
+|---|---|---|---|---|---|
+
+Aktif olanı `*` ile işaretle. Varsa Arşivlenmiş dosyaları ayrı bir başlıkta listele.
+
+### `gec <slug>`
+
+1. `dosyalar/<slug>/dosya.md` varlığını teyit et. Yoksa `yeni` komutunu öner.
+2. Genel `CLAUDE.md` içindeki `Active matter:` satırını `Active matter: <slug>` olarak güncelle.
+3. Kullanıcıya `dosya.md` özetini göstererek doğru dosyada olduğunu teyit et.
+
+---
+
+## `dosya.md` Şablonu
+
+```markdown
+[AVUKAT ÇALIŞMA ÜRÜNÜ - GİZLİDİR]
+
+# Dosya: [Müvekkil] — [Kısa Özeti]
+
+**Slug:** [slug]
+**UYAP No:** [YIL]/[ESAS NO]
+**Açılış Tarihi:** [YYYY-MM-DD]
+**Durum:** aktif
+**Gizlilik:** [standart / yüksek / kısıtlı]
+
+---
+
+## Taraflar
+
+**Müvekkil:** [ad/unvan]
+**Vekalet Durumu:** [verildi | beklemede | yok]
+**Karşı Taraf:** [ad/unvan]
+
+## Dosya Türü ve Arabuluculuk
+
+**Tür:** [İş davası / Ticari sözleşme vb.]
+**Arabuluculuk Dava Şartı:** [Zorunlu - Tamamlandı / Zorunlu - Beklemede / Gerekli Değil]
+**Anlaşmazlık Tutanağı Tarihi:** [Varsa YYYY-MM-DD]
+
+## Ana Vakıalar ve Riskler
+
+[2–5 cümle. Bu dosya ne hakkında? Paydaşlar kim? Risk ne? Playbook'tan farkı ne?]
+
+## Dosyaya Özel Sapmalar (Overrides)
+
+*Genel büro playbook'undan bu dosyaya özel sapmalar.*
+
+- [Örn: "Sorumluluk Sınırı: Müvekkil 24 ay istiyor (Büro standardı 12 ay)."]
+- [Örn: "Yetkili Mahkeme: Mutlaka İstanbul (Çağlayan) Mahkemeleri olmalı."]
+
+## İlgili Dosyalar
+
+- [slug — neden ilgili olduğu hakkında kısa not]
+
+## Notlar ve Süreler
+
+**Zamanaşımı Tarihi:** [YYYY-MM-DD]
+**Hak Düşürücü Süre:** [Varsa]
+tarihce.md Başlangıcı
+Markdown
+# Tarihçe: [Müvekkil] — [Özet]
+
+Sadece ekleme yapılabilir olay günlüğü. En yeni en üstte.
+
+---
+
+## [YYYY-MM-DD] — Dosya Açıldı
+
+Alım mülakatı tamamlandı. Slug: `[slug]`. Durum: aktif.
+[Varsa ek notlar — örn: "Karşı taraftan gelen dava dilekçesi tebliği üzerine açıldı."]
+Bu Skill Ne Yapmaz?
+Çıkar Çatışması Kontrolü (Conflict Check) Yapmaz. Bu avukatın/büronun sorumluluğundadır; mülakat sadece beyanı kaydeder.
+
+Dosya Silmez. Kapatılan dosyaları arşivler. Saklama süreleri ve imha politikası eklenti kapsamı dışındadır.
+
+Karar Vermez. Sadece dosya bağlamını izole eder ve diğer araçlara (skill) hangi klasöre yazacaklarını söyler.

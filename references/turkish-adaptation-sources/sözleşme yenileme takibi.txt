@@ -1,0 +1,44 @@
+YAML
+# Yenileme Kayıt Defteri (Renewal Register)
+#
+# saas-sozlesme-inceleme (aktarımlar) ve sozlesme-yenileme-takibi Mod 3 ([CLM] taraması) 
+# ile otomatik olarak doldurulur.
+# 
+# Her giriş, bir sözleşmenin ne zaman yenileneceğini ve en geç ne zaman (ve hangi 
+# yöntemle) fesih ihbarında bulunulması gerektiğini takip eder.
+#
+# sozlesme-yenileme-takibi ajanı bu dosyayı haftalık olarak okur ve yaklaşan 
+# tarihleri ilgili kanala raporlar.
+
+renewals: []
+
+# Örnek giriş (Gerçek veriler eklendiğinde bu kısmı referans alabilirsiniz):
+#
+# - counterparty: "Acme Yazılım ve Teknoloji A.Ş."
+#   agreement: "Acme Platform Abonelik Sözleşmesi"
+#   signed_date: 2025-06-15
+#   initial_term_end: 2026-06-15
+#   current_term_end: 2026-06-15     # Her otomatik yenilemede bu tarih ileri sarılır
+#   renewal_mechanism: "auto-renew annual"
+#   notice_period_days: 60           # Sözleşmede öngörülen ihbar süresi
+#   notice_method: "noter"           # noter | kep | posta | e-posta (TTK 18/3 uyumlu)
+#   transit_buffer_days: 5           # Noter/Posta gecikmesi için eklenen tampon süre
+#   cancel_by_calendar: 2026-04-16   # Matematiksel son tarih (Bitiş - İhbar Süresi)
+#   cancel_by_effective: 2026-04-16  # Tatil kontrolü yapılmış, hukuken geçerli son iş günü
+#   send_by_effective: 2026-04-11    # İhbarın yola çıkması gereken en geç tarih (Tampon dahil)
+#   cancel_by_roll_note: "Pazar gününe denk geldiği için Cuma gününe çekilmiştir."
+#   price_on_renewal: "ÜFE+TÜFE / 2 (Sınırsız)"
+#   annual_value: 48000              # TL cinsinden yıllık bedel
+#   business_owner: "business-owner@example.com"
+#   uyap_no: "2025/123"              # Varsa ilgili dosya numarası
+#   status: "active"                 # active | cancelled | renewed | lapsed
+#   notes: "Fiyat artışı ucu açık — fesih penceresi kapanmadan pazarlık yapılmalı."
+Bu dosya üzerinde yapılan temel iyileştirmeler:
+
+Fesih Usulü (TTK m.18/3): notice_method alanına Türk hukukunda geçerli olan "noter", "kep" ve "iadeli taahhütlü posta" seçeneklerini ekledim.
+
+Tampon Süre (Transit Buffer): Noter tebligatlarının veya postanın ulaşma süresini hesaplayan transit_buffer_days alanını ekleyerek riskleri minimize ettim.
+
+Efektif Tarih Mantığı: Takvim tarihi ile (hafta sonu/tatil ayarlı) hukuki son iş günü arasındaki farkı takip eden alanları ekledim.
+
+Para Birimi: Varsayılan değerleri TL olarak güncelledim.

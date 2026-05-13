@@ -1,0 +1,195 @@
+YAML
+name: sozlesme-tadil-gecmisi
+description: >
+  Bir sözleşmenin ana metni ile tüm ek protokolleri, zeyilnameleri ve tadil metinleri 
+  arasındaki değişiklikleri izler. Tüm değişikliklerin kronolojik özetini sunar veya 
+  spesifik bir maddenin (örn. tazminat, fesih) zaman içindeki gelişimini takip eder.
+  Kullanıcı "bu sözleşmede ne değişti", "zeyilname geçmişini göster", "en güncel 
+  [madde] nerede" dediğinde veya bir sözleşmenin birden fazla versiyonunu yüklediğinde kullanılır.
+argument-hint: "[dosya(lar) | [UYAP No] | [Sözleşme Yönetim Sistemi Linki]] [--madde <hüküm adı>]"
+---
+
+# /sozlesme-tadil-gecmisi (amendment-history)
+
+Ana sözleşmeyi ve tüm ek protokolleri yükler, ardından zaman içindeki değişiklikleri özetler veya belirli bir hükmün güncel ve geçerli halini bulmak için izini sürer.
+
+## Talimatlar
+
+1. **Belgeleri Al:** Dosya yüklemesi, UYAP veya sözleşme yönetim sisteminden belgeleri temin et. Tek seferde birden fazla dosya kabul et. Belge yoksa kullanıcıdan iste.
+
+2. **Modu Belirle:** Aşağıdaki kurallara göre modu tespit et. Belirli bir madde adı (örn. "cezai şart") geçiyorsa Mod 2'ye geç. Belirtilmemişse Mod 1 (Genel Özet) üzerinden ilerle.
+
+3. **İş Akışını Çalıştır:** Aşağıdaki adımları eksiksiz takip et.
+
+4. **Çıktı Sonrası Seçenekler Sun:**
+   - "Başka bir maddeyi takip etmemi ister misiniz?"
+   - "Sözleşmenin tadil edilmiş güncel halinin tam bir risk incelemesini ister misiniz?"
+     (sozlesme-inceleme skill'ine yönlendir)
+   - "Yönetici özeti veya paydaş sunumu hazırlamamı ister misiniz?"
+
+---
+
+## Dosya Bağlamı (Matter Context)
+
+**Dosya Bağlamı.** Büro düzeyindeki CLAUDE.md dosyasında `## Matter workspaces` bölümünü kontrol et. Eğer aktif bir dosya (matter) yoksa şunu sor: "Bu inceleme hangi dosya için? `/ticari-hukuk:dosya-alani switch <slug>` komutunu çalıştır veya `buro-geneli` de." Aktif dosyanın `dosya.md` içeriğini yükle. Çıktıları `~/.claude/plugins/config/claude-for-legal/ticari-hukuk/dosyalar/<dosya-slug>/` klasörüne yaz.
+
+---
+
+## Amaç
+
+Sözleşmeler zamanla ek protokollerle (zeyilnamelerle) birikir. Üçüncü ek protokolden sonra, ana metnin ne dediği veya hangi maddenin hangi versiyonunun geçerli olduğu karışabilir. Bu skill, ana sözleşmeyi ve tüm ek metinleri kronolojik sırayla okur, net bir tarihçe çıkarır.
+
+## Mod Tespiti
+
+**Mod 1 — Genel Özet** (Spesifik bir madde belirtilmediğinde)
+Tetikleyici ifadeler: "ne değişti", "tadil geçmişi", "zeyilnameleri özetle", "sözleşmenin son hali ne durumda"
+
+**Mod 2 — Madde Takibi** (Spesifik bir hüküm veya konu adı geçtiğinde)
+Tetikleyici ifadeler: "[madde] nerede", "güncel [hüküm]", "[terim] nasıl değişti", "cezai şartı bul", "tazminat maddesi şimdi ne diyor"
+
+Yaygın madde eşleşmeleri:
+- "tazminat" / "sorumluluktan kurtarma" → Tazminat ve Sorumluluk maddeleri
+- "sorumluluk" / "sorumluluk sınırı" → Sorumluluğun Sınırlandırılması
+- "fesih" / "sona erme" → Süre ve Fesih hükümleri
+- "veri" / "gizlilik" / "KVKK" → Kişisel Verilerin Korunması ve Gizlilik hükümleri
+- "fikri mülkiyet" / "telif" → FSMH Hakları ve Lisanslar
+- "ücret" / "ödeme" → Ödeme Koşulları ve Fiyatlandırma
+
+---
+
+## Adım 1: Belgeleri Yükle ve Sırala
+
+**UYAP / Kurumsal Arşiv:**
+Dosya numarası (`uyap_no`) veya karşı taraf adına göre arama yap. Ana sözleşmeyi ve tüm ek protokolleri çek. İmza tarihlerini kullanarak kronolojik sırayı oluştur.
+
+**Doğrudan Yükleme:**
+Kullanıcı dosyaları yükler. Sıralama genelde belge başlıklarından ("Ek Protokol No: 1", "2. Zeyilname", "Tadil Metni A") veya dosya tarihlerinden anlaşılır. Kararsız kalırsan kullanıcıya teyit et:
+> "Sıralamayı belge başlıklarına göre yaptım; ancak [belge adı] konusunda emin değilim. Sıralama doğru mu?"
+
+---
+
+## Mesleki Sır ve Gizlilik (Privilege)
+
+Bu skill, doğası gereği gizli veya avukat-müvekkil gizliliği altındaki belgeleri okur. Çıktı, kaynak belgenin gizlilik statüsünü devralır. Çıktının başına `CLAUDE.md` içindeki "Avukat Çalışma Ürünü" başlığını ekle.
+
+---
+
+## Adım 2: Okuma ve İndeksleme
+
+Her belgeyi kronolojik sırayla oku ve şunları çıkar:
+- Belge türü (Ana Sözleşme, Zeyilname No: X, Ek Protokol, vb.)
+- İmza / Yürürlük Tarihi
+- Taraflar (Değişiklik olup olmadığını, unvan değişikliğini veya devir durumunu kontrol et)
+- Açıkça değiştirilen, eklenen veya iptal edilen maddeler listesi
+
+---
+
+## Mod 1: Tüm Değişikliklerin Özeti
+
+### Madde Atıf Kuralı
+Her bulgu, okuyucunun kaynağı teyit edebilmesi için madde numarasını içermelidir:
+"Süreli Fesih (Madde 12.3): Eklendi. Müşteri, ilk dönemden sonra 90 gün önceden yazılı ihbarla tazminatsız fesih hakkına sahiptir."
+
+### Çıktı Formatı
+
+```markdown
+# Sözleşme Tadil Geçmişi: [Karşı Taraf] — [Sözleşme Türü]
+
+**uyap_no:** [YIL]/[ESAS NO]
+**Ana Sözleşme Tarihi:** [GG.AA.YYYY]
+**Zeyilname Sayısı:** [N] ([İlk tarih] → [Son tarih])
+**Güncel Durum:** [Tarih] itibarıyla son tadil işlendi.
+
+---
+
+## Değişiklik Kronolojisi
+
+### 1 No'lu Ek Protokol — [Tarih]
+**Amaç:** [Protokolün giriş/bilgi kısmından alınan kısa amaç, örn: Süre uzatımı ve birim fiyat revizyonu.]
+
+**Esaslı Değişiklikler:**
+- [Madde Adı] (m. [X]): [Eski hali → Yeni hali, sade hukuk diliyle]
+- [Yeni Eklenen Madde] (m. [X]): [Hükmün özeti]
+- [İptal Edilen Madde] (m. [X]): [Neyin kaldırıldığı ve önemi]
+
+[Her zeyilname için tekrarla]
+
+---
+
+## Mevcut Net Durum (Net Current State)
+
+| Madde | Güncel Pozisyon | Atıf (§) | Son Değişiklik |
+|---|---|---|---|
+| [Hüküm] | [Sade Türkçe Özet] | m. [X.X] | Zeyilname N, [Tarih] |
+| [Hüküm] | [Ana sözleşmeden beri aynı] | m. [X.X] | Ana Sözleşme |
+
+---
+
+## Dikkat Edilmesi Gerekenler
+[Tutarsızlıkları işaretle — örn. iptal edilmiş bir maddede değişiklik yapılması, çelişen hükümler, unvan değişikliğine rağmen yapılmamış devir protokolleri, madde numarası kaymaları vb.]
+Mod 2: Madde Takibi (Provision Trace)
+Çıktı Formatı
+Sadece ilgili maddedeki değişimleri göster. Maddeye dokunmayan zeyilnameleri atla.
+
+Markdown
+# Madde Takibi: [Madde Adı]
+## [Karşı Taraf] — [Sözleşme Türü]
+
+---
+
+### Orijinal Metin — [Ana Sözleşme Tarihi], Madde [X.X]
+> "[Tam alıntı]"
+
+*Hukuki Özet:* [Bir cümle]
+
+---
+
+### [N] No'lu Zeyilname — [Tarih], Madde [X.X]
+
+**Eski Hali:**
+> "[Önceki dilin alıntısı]"
+
+**Yeni Hali:**
+> "[Yeni dilin alıntısı]"
+
+*Ne Değişti:* [Değişikliğin taraflar üzerindeki pratik etkisi ve hak dengesi.]
+
+---
+
+## Güncel ve Geçerli Hüküm
+
+**Madde [X.X] — [Kaynak Belge, Tarih]**
+> "[Tam alıntı]"
+
+*Özet:* [Maddenin bugün itibarıyla yarattığı hukuki sonuç.]
+
+---
+
+## İzleme Notları
+[Varsa çelişkiler, zamanaşımı riskleri veya sorumluluk sınırına etkisi. Madde numarası kaymalarını mutlaka belirt.]
+Türkiye'ye Özgü Veri Alanları
+YAML
+uyap_no: "[YIL]/[ESAS NO]"
+muvekkil:
+  ad:
+  vekalet_tarihi:
+  vekalet_durumu: verildi | beklemede | yok
+zamanasimi_tarihi:
+arabuluculuk_sarti: "[Var/Yok] - (Ticari/İş davaları için kontrol et)"
+Bu Skill Ne Yapmaz?
+Ana sözleşme ile zeyilname arasında bir çelişki olduğunda hangisinin üstün geleceğine dair kesin hukuki mütalaa vermez (yorum sorunu); çelişkiyi tespit eder ve hukukçuya yönlendirir.
+
+Yeni bir zeyilname taslağı hazırlamaz.
+
+CLAUDE.md içindeki playbook ile karşılaştırma yapmaz (o, sozlesme-inceleme skill'inin işidir). Bu skill sadece tarihsel gelişimle ilgilidir.
+
+Karar Ağacı ve Sonraki Adımlar
+Analizin sonuna uygun seçenekleri ekle:
+
+Mevcut (tadil edilmiş) haliyle sözleşmenin tam bir hukuk incelemesini yap.
+
+Bu madde bazında karşı tarafa gönderilmek üzere bir ihtarname/bildirim taslağı hazırla.
+
+Çelişen hükümler için hukuk ekibine "Görüş İstemi" metni oluştur.
+
+Diğer (Belirtiniz).
