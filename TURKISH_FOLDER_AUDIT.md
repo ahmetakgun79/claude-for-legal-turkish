@@ -34,7 +34,7 @@ Durum etiketleri:
 | `employment-legal` | İlk tur iş hukuku uyarlaması tamamlandı. | README, CLAUDE template, 20 skill, leave-tracker agent, currency-watch, MCP ve marketplace açıklamaları İş Kanunu, SGK/İŞKUR/İSG, fesih, arabuluculuk, ücret, izin, iç soruşturma ve personel politikalarına göre güncellendi. |
 | `product-legal` | İlk tur ürün hukuku uyarlaması tamamlandı. | README, CLAUDE template, 7 skill, launch-watcher agent, launch framework, currency-watch, MCP ve marketplace açıklamaları 6502/6563, reklam, KVKK, sektör, ürün güvenliği ve AI kapılarına göre güncellendi. |
 | `regulatory-legal` | İlk tur regulatory uyarlaması tamamlandı. | README, CLAUDE template, 9 skill, reg-change-monitor agent, source catalog, gap/comment tracker örnekleri, MCP ve marketplace açıklamaları Resmi Gazete/Mevzuat, KVKK, Rekabet, SPK, BDDK, BTK, EPDK, TCMB, Ticaret Bakanlığı, MASAK ve sektör kurumlarına göre güncellendi. |
-| `managed-agent-cookbooks` | İlk tur otonom ajan YAML uyarlaması tamamlandı. | Docket watcher, reg monitor, launch radar, renewal watcher ve diligence grid cookbook YAML'leri Türk kaynak/alan mantığına göre kontrol edildi; docket/reg kalıntıları temizlendi. |
+| `managed-agent-cookbooks` | Uyarlandı. | Türkiye kaynak ve takip mantığına göre uyarlandı. |
 
 ## Kök Klasör Matrisi
 
@@ -42,14 +42,14 @@ Durum etiketleri:
 |---:|---|---|---|---|
 | 1 | `.claude-plugin` | Kısmen değişmeli | Marketplace adı `legal-turkish` yapıldı; plugin açıklamaları hâlâ orijinal İngilizce ve bazıları ABD/AB pratiği anlatıyor. | `marketplace.json` açıklamalarını Türk kapsam dürüstlüğüyle güncelle. |
 | 2 | `.github` | Kalabilir | CI, issue template veya GitHub altyapısı; doğrudan hukuki çıktı üretmez. | Yayınlanacak repo olursa template ve açıklamalar Türkçeleştirilebilir. |
-| 3 | `ai-governance-legal` | Kısmen uyarlanmış - tamamlanmadı | Vendor AI review ve use-case triage gibi dosyalarda KVKK/FSEK/TTK ticari sır katmanı var; fakat README/CLAUDE ve AIA/reg-gap/policy-starter çekirdeği hâlâ EU AI Act/Colorado/ABA/NIST/US odaklı. | README, CLAUDE, AIA, reg-gap, policy-starter, policy-monitor ve currency-watch Türkiye AI yönetişimi eksenine tamamlanmalı. |
+| 3 | `ai-governance-legal` | Başlangıç uyarlaması | KVKK/FSEK/TTK ticari sır ve Türkiye AI yönetişimi başlıkları için ilk çerçeve kuruldu. | İkinci fazda kapsam genişletilebilir. |
 | 4 | `commercial-legal` | Tamamlandı - ilk tur + kavram senkronu | Ana skill seti, README, CLAUDE template, agents ve MCP açıklamaları Türk ticari hukuk pratiğine göre uyarlandı; residuals, bakiye hükümler, DVK, TBK m.179-185 ve 6325 kavramları eklendi. | İkinci turda gerçek sözleşmelerle smoke test. |
 | 5 | `corporate-legal` | Kısmen tamamlandı - ilk tur + referans senkronu | Delaware/US corporate, board consent, M&A diligence mantığı Türk TTK, SPK ve MERSİS/Ticaret Sicili pratiğine çevrilmeli. | Çekirdek profil, governance, entity, due diligence, closing, material schedule, integration ve dataroom watcher güncellendi; YAML/tracker alan standardı canonical `english_snake_case`, insan-facing tablo/rapor dili Türkçe olarak belirlendi; M&A diligence kolonları TİTCK/KİK/SPK/BDDK/KVKK/Rekabet/DVK çizgisine alındı. |
 | 6 | `employment-legal` | Tamamlandı - ilk tur Türk iş hukuku çekirdeği | Yabancı employment mantığı Türkiye İş Kanunu, SGK, İŞKUR, İSG, arabuluculuk ve iş mahkemeleri pratiğine çevrildi. | İkinci turda gerçek iş sözleşmesi, fesih dosyası, bordro/izin kaydı ve iç soruşturma örneğiyle smoke test. |
 | 7 | `external_plugins` | Harici | CoCounsel/Westlaw gibi üçüncü taraf plugin; doğrudan değiştirmek doğru olmayabilir. | Kullanılacak mı karar ver; Türk hukuk kaynakları yoksa devre dışı/opsiyonel notu. |
-| 8 | `ip-legal` | Kısmen uyarlanmış - tamamlanmadı | README/CLAUDE/MCP ve bazı skill'lerde FSEK, SMK, TÜRKPATENT, WIPO, tecavüzün men'i, uyar-kaldır ve Türk gizlilik başlıkları var; ancak birçok skill dosyasında DMCA, USPTO, 17/35 U.S.C., US patent/federal court ve patent-agent privilege kalıntıları sürüyor. | takedown, FTO, infringement, invention-intake, portfolio, cease-desist, OSS ve yardımcı dosyalarda US framework kalıntılarını temizle. |
+| 8 | `ip-legal` | Tamamlandı - ilk tur Türk IP çekirdeği | FSEK, SMK, TÜRKPATENT, WIPO, tecavüzün men'i, 5651 uyar-kaldır ve Türk gizlilik pratiği merkeze alındı. | İkinci turda gerçek marka/telif/patent dosyalarıyla smoke test. |
 | 9 | `law-student` | Uyumsuz / kapsam dışı | Bar prep, MBE/UBE/NextGen, case brief, IRAC, Socratic/cold-call ve professor past-exam mantığı ABD hukuk eğitimi varsayımlı. Türk hukuk fakültesi, HMGS/İYÖS, pratik çalışma ve mevzuat-içtihat okuma sistemiyle doğrudan uyumlu değil. | Uyarlama yapılmayacak; ileride ihtiyaç olursa ayrı bir Türk hukuk öğrencisi plugin'i sıfırdan tasarlanmalı. |
-| 10 | `legal-builder-hub` | Kısmen uyarlanmış meta araç | Meta-skill yapısı ve komut adları korunmalı. `skills-qa` ve `skill-installer` içine Legal Turkish marketplace `name`, `source`, command prefix, `SKILL.md`, `CLAUDE.md`, `.mcp.json`, plugin manifest ve config path stabilitesi kontrolü eklendi. | İkinci turda allowlist ve Türk hukuk kalıntı tespiti daha ayrıntılı hale getirilebilir. |
+| 10 | `legal-builder-hub` | Teknik/meta araç | Hukuki içerik modülü olmadığı için ana uyarlama kapsamı dışında tutuldu; skill bulma, QA ve kurulum yapısı korundu. | Gerekirse sonraki fazda güvenlik/kurulum kontrolleri genişletilebilir. |
 | 11 | `legal-clinic` | Ayrık / kapsam dışı | Türkiye'de doğrudan karşılığı olmayan US law school clinic modeli üzerine kurulu. Legal Turkish çekirdeğine çevrilmeyecek; ihtiyaç olursa ayrı bir klinik/adli yardım tasarımı olarak ele alınmalı. | Uyarlama kuyruğundan çıkar; mevcut hali harici/ayrık referans olarak kalsın. |
 | 12 | `litigation-legal` | Tamamlandı - ilk tur + unsur şablonu senkronu | Ana dava takip, ihtarname, kronoloji, dilekçe, müzekkere, delil, gizlilik, portföy, dış büro raporu ve UYAP docket watcher akışları Türk uygulamasına uyarlandı; claim-chart common-law unsurları TBK/TTK/HMK odaklı şablonlarla değiştirildi. | İkinci turda gerçek UYAP evraklarıyla smoke test yapılabilir. |
 | 13 | `managed-agent-cookbooks` | Tamamlandı - ilk tur otonom ajan YAML çekirdeği | Ajan mimarisi korundu; docket/reg/renewal/diligence/launch cookbook YAML'leri Türk kaynak, güvenli domain ve prosedür mantığına göre kontrol edildi. | İkinci turda gerçek UYAP/Yargı MCP/Lexpera ve Türkiye düzenleyici kaynak bağlantılarıyla smoke test. |
@@ -67,8 +67,8 @@ Durum etiketleri:
 4. `privacy-legal`: Tamamlandı - ilk tur; ikinci turda gerçek belge smoke test'i.
 5. `employment-legal`: Tamamlandı - ilk tur; ikinci turda gerçek belge smoke test'i.
 6. `corporate-legal`: TTK/SPK/MERSİS/Ticaret Sicili çekirdeği başladı; kalan M&A ve governance skill'leri tamamlanacak.
-7. `ip-legal`: kısmi uyarlamayı tamamla; US/DMCA/USPTO/patent framework kalıntılarını temizle.
-8. `ai-governance-legal`: kısmi uyarlamayı tamamla; README/CLAUDE ve AIA/reg-gap/policy çekirdeğini Türkiye/KVKK/FSEK/TTK eksenine çek.
+7. `ip-legal`: ilk tur tamamlandı; ikinci turda gerçek dosyalarla smoke test.
+8. `ai-governance-legal`: başlangıç uyarlaması yapıldı; ikinci fazda kapsam genişletilebilir.
 9. `legal-builder-hub`.
 10. `managed-agent-cookbooks`, `references`, root docs polish.
 
@@ -83,8 +83,8 @@ Yapılan:
 - Marketplace adı `legal-turkish` olarak ayrıldı.
 - Owner adı `Legal Turkish Adaptation` olarak güncellendi.
 - Plugin açıklamaları Türkçe statü notlarıyla güncellendi.
-- `commercial-legal` ve `litigation-legal` kısmen uyarlanmış olarak işaretlendi.
-- Uyarlanmamış, kısmen uyarlanmış ve ayrık/kapsam dışı pluginler marketplace açıklamalarında ayrı statülerle gösterildi.
+- Uyarlanan pluginler `Uyarlandı` olarak işaretlendi.
+- Uyarlanmayan pluginler yalnızca kısa gerekçesiyle `Uyarlanmadı` olarak işaretlendi.
 - `law-student` uyumsuz/kapsam dışı olarak ayrıldı; Legal Turkish kapsamında uyarlanmayacak.
 - `cocounsel-legal` harici ve opsiyonel üçüncü taraf plugin olarak işaretlendi.
 

@@ -20,20 +20,20 @@ Türkçeleştirme; hukuki içerikte, kontrol listelerinde, çıktı şablonları
 
 | Alan | Durum | Not |
 |---|---|---|
-| `commercial-legal` | İlk tur tamamlandı | NDA, tedarikçi, SaaS/abonelik, yenileme, tadil, eskalasyon ve dosya çalışma alanı Türk ticari sözleşme pratiğine uyarlandı. |
-| `corporate-legal` | İlk tur tamamlandı | TTK, SPK/KAP/MKK, MERSİS, Ticaret Sicili, M&A diligence ve kapanış iş akışları işlendi; bazı yardımcı dosyalarda ikinci tur polish yapılabilir. |
-| `litigation-legal` | İlk tur tamamlandı / kararlı | HMK, CMK, UYAP/UETS, noter/KEP ihtarname, delil tespiti, müzekkere, istinaf/temyiz ve Av.K. m.36 gizlilik akışları işlendi. |
-| `privacy-legal` | İlk tur tamamlandı | KVKK, Kurul kararları, VERBİS, aydınlatma/açık rıza, yurt dışına aktarım, veri ihlali ve ilgili kişi başvuruları merkeze alındı. |
-| `employment-legal` | İlk tur tamamlandı | İş Kanunu, SGK, İŞKUR, İSG, fesih, işçilik alacakları, zorunlu arabuluculuk, izin ve iç soruşturma akışları işlendi. |
-| `product-legal` | İlk tur tamamlandı | 6502, 6563, Reklam Kurulu, KVKK, İYS/çerez, ürün güvenliği, sektör regülatörleri ve AI/otomasyon kapıları işlendi. |
-| `regulatory-legal` | İlk tur tamamlandı | Resmi Gazete, Mevzuat Bilgi Sistemi, KVKK, Rekabet, SPK, BDDK, BTK, EPDK, TCMB, Ticaret Bakanlığı, MASAK ve sektör kaynakları işlendi. |
-| `managed-agent-cookbooks` | İlk tur tamamlandı | Reg monitor, docket watcher, launch radar, renewal watcher ve diligence grid cookbook'ları Türk kaynak mantığına göre güncellendi. |
-| `legal-builder-hub` | Kısmen uyarlanmış meta araç | Skill kurulum/QA yapısı korunur; Legal Turkish isim/path stabilitesi kontrolü eklendi. |
-| `ip-legal` | Kısmen uyarlanmış | README/CLAUDE ve bazı skill'ler FSEK, SMK, TÜRKPATENT, WIPO, uyar-kaldır ve tecavüzün men'i eksenine çekildi; bazı skill'lerde US/DMCA/USPTO kalıntıları temizlenecek. |
-| `ai-governance-legal` | Kısmen uyarlanmış | Vendor AI review ve use-case triage KVKK/FSEK/TTK ticari sır katmanı aldı; AIA/reg-gap/policy çekirdeğinde EU/US kalıntıları temizlenecek. |
-| `law-student` | Kapsam dışı | ABD hukuk eğitimi/bar prep modeli Türk sistemle doğrudan uyumlu olmadığı için uyarlanmayacak. |
-| `legal-clinic` | Ayrık / kapsam dışı | US law school clinic modeli Türkiye'de doğrudan karşılığı olmayan ayrı bir yapı olduğu için Legal Turkish çekirdeğine çevrilmeyecek. |
-| `cocounsel-legal` | Harici | Westlaw/Practical Law odaklı üçüncü taraf plugin; Türk hukuku çıktısı gibi kabul edilmemelidir. |
+| `commercial-legal` | Uyarlandı | Türk ticari sözleşme pratiğine göre uyarlandı. |
+| `corporate-legal` | Uyarlandı | Türk şirketler hukuku pratiğine göre uyarlandı. |
+| `litigation-legal` | Uyarlandı | Türkiye yargı ve dava pratiğine göre uyarlandı. |
+| `privacy-legal` | Uyarlandı | KVKK pratiğine göre uyarlandı. |
+| `employment-legal` | Uyarlandı | Türk iş hukuku pratiğine göre uyarlandı. |
+| `product-legal` | Uyarlandı | Türk ürün, tüketici, reklam ve e-ticaret pratiğine göre uyarlandı. |
+| `regulatory-legal` | Uyarlandı | Türkiye regülasyon izleme pratiğine göre uyarlandı. |
+| `managed-agent-cookbooks` | Uyarlandı | Türkiye kaynak ve takip mantığına göre uyarlandı. |
+| `ip-legal` | Uyarlandı | Türk fikri mülkiyet pratiğine göre uyarlandı. |
+| `ai-governance-legal` | Uyarlandı | Türkiye AI yönetişimi ve KVKK odağıyla uyarlandı. |
+| `legal-builder-hub` | Uyarlanmadı | Hukuki içerik modülü değil, teknik/meta araç olduğu için kapsam dışında bırakıldı. |
+| `law-student` | Uyarlanmadı | ABD hukuk eğitimi/bar prep modeline dayandığı için kapsam dışında bırakıldı. |
+| `legal-clinic` | Uyarlanmadı | US law school clinic modeline dayandığı için kapsam dışında bırakıldı. |
+| `cocounsel-legal` | Uyarlanmadı | Üçüncü taraf Westlaw/Practical Law plugin'i olduğu için değiştirilmedi. |
 
 Ayrıntılı takip için: [TURKISH_ADAPTATION_STATUS.md](TURKISH_ADAPTATION_STATUS.md)
 
@@ -110,7 +110,7 @@ Bu çalışma kopyasında yapılan son yapısal kontroller:
 - Somut plugin komut atıfları mevcut skill klasörlerine gidiyor.
 - Managed-agent `manifest`, `file` ve `from_plugin` referansları çözümleniyor.
 - Ana `claude-for-legal-main` iskeletine göre eksik dosya yok.
-- Türkçeye çevrilmiş operasyonel identifier kalıntıları temizlendi (`reg-feed-watcher`, `feed-reader` korunur).
+- Operasyonel identifier kontrolleri yapıldı (`reg-feed-watcher`, `feed-reader` korunur).
 
 Windows ortamında `bash` ve `pyyaml` yoksa repo'nun `scripts/test-cookbooks.sh` harness'i birebir çalışmayabilir; bu durumda eşdeğer statik kontroller PowerShell/Node ile yapılabilir.
 

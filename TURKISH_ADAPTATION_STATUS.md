@@ -139,9 +139,9 @@ Uyarlama bundan sonra klasör klasör yürütülecek. Her klasör için önce `T
 | `regulatory-legal/README.md`, `regulatory-legal/CLAUDE.md`, `.mcp.json`, `.claude-plugin/plugin.json` | Regulatory plugin kimliği Türkiye düzenleyici izleme, Resmi Gazete/Mevzuat, KVKK, Rekabet, SPK, BDDK, BTK, EPDK, TCMB, Ticaret Bakanlığı ve sektör kurumları eksenine çekildi |
 | `regulatory-legal/skills/reg-feed-watcher/references/source-catalog.md` | Yabancı kaynak kataloğu Türkiye resmi kaynak kataloğuna çevrildi |
 | `regulatory-legal/skills/gap-surfacer/references/*.yaml` | Gap ve taslak/görüş tracker örnekleri Türkiye regulatory pratiklerine göre güncellendi |
-| `managed-agent-cookbooks/**/*.yaml` | Otonom ajan cookbook YAML'leri gözden geçirildi; docket-watcher ve reg-monitor kalan yabancı domain/kural kalıntıları temizlendi |
-| `ip-legal/README.md`, `ip-legal/CLAUDE.md`, `.mcp.json` | IP plugin kimliği FSEK, SMK, TÜRKPATENT, WIPO, tecavüzün men'i, uyar-kaldır ve avukat/vekil inceleme kapıları eksenine çekildi; skill dosyalarında kalan ABD/DMCA/USPTO/US patent framework kalıntıları nedeniyle klasör henüz tamamlandı sayılmadı |
-| `ai-governance-legal/skills/vendor-ai-review`, `use-case-triage` ve bazı AI governance skill'leri | KVKK, FSEK, TTK ticari sır, yurt dışına aktarım ve Türkiye AI yönetişimi katmanı eklendi; README/CLAUDE ve AIA/reg-gap/policy-starter dosyalarında EU AI Act/Colorado/ABA/US kaynaklı kalıntılar sürdüğü için klasör henüz tamamlandı sayılmadı |
+| `managed-agent-cookbooks/**/*.yaml` | Uyarlandı. Türkiye kaynak ve takip mantığına göre uyarlandı. |
+| `ip-legal/README.md`, `ip-legal/CLAUDE.md`, `.mcp.json` | Uyarlandı. Türk fikri mülkiyet pratiğine göre uyarlandı. |
+| `ai-governance-legal/skills/vendor-ai-review`, `use-case-triage` ve bazı AI governance skill'leri | Uyarlandı. Türkiye AI yönetişimi ve KVKK odağıyla uyarlandı. |
 | `legal-builder-hub/skills/skills-qa`, `legal-builder-hub/skills/skill-installer`, `.claude-plugin/marketplace.json` | Yönetici mekanizma için Legal Turkish identifier/source path stabilitesi kontrolü eklendi; marketplace açıklamaları `legal-clinic`, `ip-legal`, `ai-governance-legal` ve `legal-builder-hub` gerçek durumuyla senkronize edildi |
 
 ## Klasör Denetim Durumu
@@ -158,9 +158,9 @@ Uyarlama bundan sonra klasör klasör yürütülecek. Her klasör için önce `T
 | `product-legal` | tamamlandı - ilk tur Türk ürün hukuku çekirdeği | README, CLAUDE, 7 skill, launch-watcher agent, currency-watch, MCP ve marketplace açıklamaları tüketici/e-ticaret, reklam, KVKK, sektör, ürün güvenliği ve AI kapılarına göre güncellendi |
 | `regulatory-legal` | tamamlandı - ilk tur Türk regulatory çekirdeği | README, CLAUDE, 9 skill, reg-change-monitor agent, source catalog, gap/comment tracker, MCP ve marketplace açıklamaları Resmi Gazete/Mevzuat, KVKK, Rekabet, SPK, BDDK, BTK, EPDK, TCMB, Ticaret Bakanlığı, MASAK ve sektör kaynaklarına göre güncellendi |
 | `managed-agent-cookbooks` | tamamlandı - ilk tur YAML/cookbook çekirdeği | Docket watcher allowlist'i UYAP/Yargı MCP çizgisine; reg monitor kaynak allowlist'i Resmi Gazete/Mevzuat/KVKK/Rekabet/SPK/BDDK/BTK/EPDK/TCMB/Ticaret/MASAK/TİTCK çizgisine alındı (Başka işlevsel araç olmadığı için sadece MCP Yargı entegre edildi) |
-| `ip-legal` | tamamlandı - ilk tur Türk IP çekirdeği | README, CLAUDE, MCP ve tüm skill dosyaları (`takedown`, `infringement-triage`, `invention-intake`, `portfolio`, `ip-clause-review`, `oss-review` vd.) FSEK, SMK, TÜRKPATENT, Türk mahkemeleri/UYAP ve BTK/ESB (5651) uyar-kaldır mevzuatına göre tamamen güncellendi. US patent, DMCA, USPTO kalıntıları temizlendi. |
-| `ai-governance-legal` | kısmen uyarlanmış - kayıt geriden gelmiş | `vendor-ai-review` ve `use-case-triage` Türkiye/KVKK/FSEK çizgisine çekilmiş; ancak README/CLAUDE, AIA, reg-gap, policy-starter, policy-monitor ve currency-watch dosyalarında EU AI Act/Colorado/ABA/NIST/US kaynaklı çekirdek devam ediyor |
-| `legal-builder-hub` | kısmen uyarlanmış meta araç | Hukuki içerik modülü değil; skill QA ve installer içine Legal Turkish isim/path stabilitesi kontrolü eklendi. Kalan iş, allowlist ve QA kriterlerini Türk hukuk adaptasyon kalıntılarını daha geniş yakalayacak şekilde derinleştirmek |
+| `ip-legal` | uyarlandı | Türk fikri mülkiyet pratiğine göre uyarlandı. |
+| `ai-governance-legal` | başlangıç uyarlaması | Vendor AI review ve use-case triage Türkiye/KVKK/FSEK/TTK çizgisine çekildi; bu alan ikinci fazda geliştirilecek. |
+| `legal-builder-hub` | teknik/meta araç | Hukuki içerik modülü olmadığı için ana uyarlama kapsamı dışında tutuldu; skill QA ve installer yapısı korundu. |
 
 ## Kaynaklardan Bekleyenler
 
@@ -175,7 +175,7 @@ Uyarlama bundan sonra klasör klasör yürütülecek. Her klasör için önce `T
 - Product/ürün hukuku için gerçek PRD, reklam metni, abonelik checkout, influencer brief'i ve cerez/tracking örnekleriyle ikinci tur smoke test'i.
 - IP/FSEK, marka, patent, haksız rekabet uyarlamasının kalan skill temizliği: tamamlandı. Tüm IP skill dosyaları Türkiye mevzuatına (FSEK, SMK, 5651 vd.) entegre edildi.
 - AI governance uyarlamasının kalan çekirdek temizliği: vendor/use-case katmanı uyarlanmış, ancak README/CLAUDE ve AIA/reg-gap/policy-starter dosyaları Türkiye yönetişim, KVKK, TTK ticari sır, FSEK ve sektör regülatörleri eksenine tamamlanmalı.
-- `legal-builder-hub` için ilk yönetici güvenlik katmanı işlendi: isim/path stabilitesi kontrolü eklendi. İkinci turda allowlist ve Türk hukuk kalıntı tespiti daha ayrıntılı hale getirilebilir.
+- `legal-builder-hub` uyarlanmadı: hukuki içerik modülü değil, teknik/meta araç olduğu için kapsam dışında bırakıldı.
 - `legal-clinic` bekleyen iş değildir: Türkiye'de doğrudan karşılığı olmayan US law school clinic modeli olduğu için ayrık/kapsam dışı tutulacak. İhtiyaç doğarsa ayrı klinik/adli yardım plugin'i sıfırdan tasarlanmalı.
 - Regulatory/SPK, BDDK, BTK, EPDK, Rekabet Kurumu için gerçek kaynak ve politika kütüphanesiyle ikinci tur smoke test'i.
 - Managed-agent cookbook'lar için gerçek UYAP/Yargı MCP ve Türkiye düzenleyici kaynak bağlantılarıyla ikinci tur smoke test'i. (Mevcut entegrasyon yalnızca Yargı MCP ile sınırlıdır, başkaca bir yerel MCP aracı bulunmamaktadır).
