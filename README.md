@@ -101,6 +101,28 @@ legal-turkish-master/
 └── scripts/
 ```
 
+## Dosya ve Klasör Açıklamaları
+
+Bu repo birden fazla Claude Code plugin'inden oluştuğu için aynı dosya adları farklı klasörlerde tekrar eder. Aşağıdaki açıklamalar, hangi dosyanın ne amaçla güncelleneceğini hızlıca ayırt etmek içindir.
+
+| Yol / Desen | Açıklama |
+|---|---|
+| `README.md` | Repo'nun genel kimliğini, kurulum akışını, uyarlama durumunu ve temel kullanım örneklerini açıklar. |
+| `QUICKSTART.md` | Claude Code içinde marketplace ekleme, plugin kurma ve ilk komutları çalıştırma için kısa başlangıç rehberidir. |
+| `TURKISH_ADAPTATION_STATUS.md` | Türk hukuku uyarlamasında tamamlanan ve bekleyen işleri merkezi olarak izler. |
+| `TURKISH_FOLDER_AUDIT.md` | Klasör bazında hangi alanların değişmesi, kalması veya kapsam dışı bırakılması gerektiğini belgeleyen denetim dosyasıdır. |
+| `<alan>-legal/README.md` | İlgili hukuk alanındaki plugin'in hedef kullanıcılarını, komutlarını, guardrail'lerini ve mevcut durumunu açıklar. |
+| `<alan>-legal/CLAUDE.md` | Plugin kurulduğunda Claude'un kullanacağı alan profili, çıktı kuralları, hukukî varsayımlar ve güvenlik sınırlarını taşır. |
+| `<alan>-legal/skills/*/SKILL.md` | Her komutun çalışma mantığını, girdi/çıktı beklentilerini, inceleme adımlarını ve alan özelindeki kontrol listelerini tanımlar. |
+| `<alan>-legal/agents/*.md` | Zamanlı veya izleme odaklı ajanların nasıl çalışacağını, hangi kaynakları izleyeceğini ve nasıl raporlayacağını açıklar. |
+| `<alan>-legal/hooks/hooks.json` | Claude Code plugin hook yapılandırmasıdır; hukuki içerikten çok teknik tetikleyici davranışlarını düzenler. |
+| `<alan>-legal/references/*` | Skill'lerin dayandığı kontrol listeleri, şablonlar, tracker örnekleri ve alan özelindeki güncellik notlarını içerir. |
+| `managed-agent-cookbooks/*` | Yönetilen ajan örneklerini, alt ajan rollerini ve Türkiye kaynaklarına göre uyarlanmış izleme akışlarını içerir. |
+| `references/` | Türk hukukuna uyarlama rehberleri, kaynak arşivleri ve repo geneli şablonları barındırır. |
+| `scripts/` | Marketplace, manifest, cookbook ve referans bütünlüğünü kontrol eden teknik doğrulama script'lerini içerir. |
+
+Bir dosyayı güncellerken genel kural şudur: hukuki içerik ve kullanıcıya görünen açıklamalar Türkçe/Türk hukuku ekseninde tutulur; plugin klasör adları, komut adları ve teknik identifier'lar ise orijinal yapıyla uyum için İngilizce bırakılır.
+
 ## Doğrulama
 
 Bu çalışma kopyasında yapılan son yapısal kontroller:

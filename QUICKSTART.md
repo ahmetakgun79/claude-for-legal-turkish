@@ -6,6 +6,11 @@ Bu klasör, Türk hukuku adaptasyonunun bağımsız çalışma kopyasıdır.
 
 Claude Code içinde:
 
+
+
+
+
+
 ```text
 /plugin marketplace add C:\Users\hukuk\.gemini\antigravity\scratch\claude legal\Legal Turkish
 ```
@@ -76,7 +81,22 @@ Yenileme takibi:
 /litigation-legal:demand-draft <slug>
 ```
 
+## 6. Hangi Dosyaya Bakılır?
+
+| İhtiyaç | Bakılacak dosya |
+|---|---|
+| Repo'nun genel amacı ve kapsamı | `README.md` |
+| Kurulumun en kısa yolu | `QUICKSTART.md` |
+| Hangi alanların Türk hukukuna uyarlandığı | `TURKISH_ADAPTATION_STATUS.md` |
+| Klasör bazında neden değişiklik yapıldığı | `TURKISH_FOLDER_AUDIT.md` |
+| Bir plugin'in komutları ve guardrail'leri | `<plugin>/README.md` |
+| Claude'un alan profilini ve çıktı kurallarını değiştirmek | `<plugin>/CLAUDE.md` |
+| Tek bir komutun davranışını güncellemek | `<plugin>/skills/<skill>/SKILL.md` |
+| İzleme veya zamanlı rapor ajanını güncellemek | `<plugin>/agents/<agent>.md` |
+| Kaynak, şablon veya tracker örneğini değiştirmek | `<plugin>/references/*` veya `references/*` |
+
+Güncelleme yaparken `SKILL.md` dosyalarında kullanıcıya görünen hukukî açıklamaları Türkçe tutun; klasör, komut ve yapılandırma adlarını ise repo genelinde yeniden adlandırma kararı alınmadıkça değiştirmeyin.
+
 ## Not
 
 Komut adları şimdilik orijinal repo ile uyumlu kalır. Türkçeleştirme hukuki içerikte ve çıktı dilindedir. Komut adlarını `/ticari-hukuk:*` gibi Türkçeleştirmek istersek bu ayrı bir repo-geneli yeniden adlandırma işidir.
-
