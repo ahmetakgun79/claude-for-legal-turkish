@@ -110,6 +110,7 @@ Uyarlama bundan sonra klasör klasör yürütülecek. Her klasör için önce `T
 
 | Dosya | Durum |
 |---|---|
+| `README.md` ve `QUICKSTART.md` | Dosya/klasör açıklamaları eklendi; hangi dosyanın ne amaçla güncelleneceği netleştirildi |
 | `commercial-legal/skills/renewal-tracker/references/renewal-register.yaml` | Türk bildirim ve yenileme pratiğine göre güncellendi |
 | `.claude-plugin/marketplace.json` | `legal-turkish` kimliği ve Türkçe statü açıklamalarıyla güncellendi |
 | `commercial-legal/CLAUDE.md` | Türk commercial contracts profil template'i olarak yeniden yazıldı |
